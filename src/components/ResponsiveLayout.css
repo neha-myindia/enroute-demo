@@ -134,6 +134,9 @@
     padding: 1rem;
     box-sizing: border-box;
 }
+.map-container iframe{
+    width: 100%;
+}
 }
 
 
@@ -265,5 +268,8 @@
     width: 100%;
     padding: 1rem;
     box-sizing: border-box;
+}
+.map-container iframe{
+    width: 100%;
 }
 }
