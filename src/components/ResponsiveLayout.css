@@ -129,6 +129,11 @@
 .details-container .social-icons{
     font-size: 25px;
 }
+.map-container{
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+}
 }
 
 
@@ -255,5 +260,10 @@
 }
 .input-select {
     width: 100% !important;
+}
+.map-container{
+    width: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
 }
 }
