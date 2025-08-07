@@ -12,7 +12,7 @@ useEffect(() => {
   return (
     <main className=''>
        <Introduction/>
-      <Filter/>
+      {/* <Filter/> */}
       <HomeGalleryComponent/>
     </main>
   );

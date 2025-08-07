@@ -1,29 +1,39 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { HiAdjustments } from "react-icons/hi";
-import { MdViewModule } from "react-icons/md";
-import { IoIosArrowDown } from "react-icons/io";
 import '../components/Navbar/Navbar.css';
 import '../components/ResponsiveLayout.css';
-import { GallerylistAlphabets, defaultGallerylistitems } from '../constants/items';
-import { NavLink } from 'react-router-dom';
+import { GallerylistAlphabets } from '../constants/items';
+import { useNavigate } from 'react-router-dom';
 
 const areas = [
-  "City/CBD", "Darlinghurst/Woolloonooloo", "Surry Hills", 
-  "Potts Point/Rushcutters Bay", "Paddington/Woollahra", 
-  "Chippendale/Darlington", "Redfern/Waterl", 
-  "Alexandria/Zetland", "North Shore/Manly"
+  "All","Alexandria/Zetland", "Chippendale/Darlington",  "City/CBD", "Darlinghurst/Woolloomooloo", "North Shore/Manly", "Paddington/Woollahra","Potts Point/Rushcutters Bay", "Redfern/Waterloo", "Surry Hills"
+  ,  , "Testing Purpose"
 ];
 
 const GallerylistFilter = () => {
+  const baseUrl = import.meta.env.VITE_API_URL;
   const [selectedAreas, setSelectedAreas] = useState([]);
   const [showAreaOptions, setShowAreaOptions] = useState(false);
   const dropdownAreaRef = useRef(null);
 
   const [selectedAlphabet, setSelectedAlphabet] = useState('');
+  const [allGalleryItems, setAllGalleryItems] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    setFilteredData(defaultGallerylistitems.slice(0, 16));
+    const fetchGalleryItems = async () => {
+      try {
+        const response = await fetch(`${baseUrl}/api/galleries/`);
+        const data = await response.json();
+        setAllGalleryItems(data);
+        setFilteredData(data.slice(0, 16));
+      } catch (error) {
+        console.error("Error fetching gallery items:", error);
+      }
+    };
+    fetchGalleryItems();
   }, []);
 
   useEffect(() => {
@@ -39,23 +49,46 @@ const GallerylistFilter = () => {
   }, []);
 
   const handleCheckboxChange = (area) => {
-    if (selectedAreas.includes(area)) {
-      setSelectedAreas(selectedAreas.filter(item => item !== area));
-    } else {
-      setSelectedAreas([...selectedAreas, area]);
-    }
+    setSelectedAreas(prev =>
+      prev.includes(area) ? prev.filter(a => a !== area) : [...prev, area]
+    );
   };
 
   const handleAlphabetClick = (alphabet) => {
-  setSelectedAlphabet(alphabet);
-  
-  const filtered = defaultGallerylistitems.filter(item => {
-    const firstChar = item.name.trim().charAt(0).toUpperCase();
-    return firstChar === alphabet.toUpperCase();
-  });
+    setSelectedAlphabet(alphabet);
+    const filtered = allGalleryItems.filter(item =>
+      item.name?.trim()?.charAt(0)?.toUpperCase() === alphabet.toUpperCase()
+    );
+    setFilteredData(filtered);
+  };
 
-  setFilteredData(filtered);
+  const handleGalleryClick = (item) => {
+    navigate('/gallery-list-item-details', { state: { id: item.id } });
+  };
+
+ const handleSearchClick = async () => {
+  try {
+    const params = new URLSearchParams();
+
+    if (selectedAlphabet) {
+      params.append('name_startswith', selectedAlphabet);
+    }
+
+    if (selectedAreas.length > 0 && !selectedAreas.includes("All")) {
+      selectedAreas.forEach(area => {
+        params.append('area', area);
+      });
+    }
+
+    const response = await fetch(`${baseUrl}/api/galleries/?${params.toString()}`);
+    console.log("Final API URL:", `${baseUrl}/api/galleries/?${params.toString()}`);
+    const data = await response.json();
+    setFilteredData(data);
+  } catch (error) {
+    console.error("Error during filtered fetch:", error);
+  }
 };
+
 
 
   return (
@@ -66,10 +99,6 @@ const GallerylistFilter = () => {
             <div>filter by</div>
             <div className='icon'><HiAdjustments /></div>
           </div>
-          {/* <div className='filter-right-menu'>
-            <div className='icon'><MdViewModule /></div>
-            <div className='sort-by-btn'>sort by<IoIosArrowDown /></div>
-          </div> */}
         </div>
 
         <div className='bottom-menu-wrapper bottom-menu-wrapper-align-top'>
@@ -77,13 +106,13 @@ const GallerylistFilter = () => {
             <label>Name</label>
             <div className='alphabets-search-grid'>
               {GallerylistAlphabets.map((item) => (
-                <div 
-  key={item.id} 
-  className={`alphabets ${selectedAlphabet === item.alpha ? 'active' : ''}`} 
-  onClick={() => handleAlphabetClick(item.alpha)}
->
-  {item.alpha}
-</div>
+                <div
+                  key={item.id}
+                  className={`alphabets ${selectedAlphabet === item.alpha ? 'active' : ''}`}
+                  onClick={() => handleAlphabetClick(item.alpha)}
+                >
+                  {item.alpha}
+                </div>
               ))}
             </div>
           </div>
@@ -91,13 +120,9 @@ const GallerylistFilter = () => {
           <div className='right-suburb-area-filter x-y-z right-suburb-area-filter-mobile-view'>
             <div className="suburb-area-filter suburb-area-filter-margin" ref={dropdownAreaRef}>
               <label>Suburb / Area</label>
-              <div
-                className="custom-select"
-                onClick={() => setShowAreaOptions(!showAreaOptions)}
-              >
+              <div className="custom-select" onClick={() => setShowAreaOptions(!showAreaOptions)}>
                 {selectedAreas.length > 0 ? selectedAreas.join(", ") : "Select Area"}
               </div>
-
               {showAreaOptions && (
                 <div className="options-list">
                   {areas.map(area => (
@@ -113,9 +138,8 @@ const GallerylistFilter = () => {
                 </div>
               )}
             </div>
-
             <div className='search-btn-wrapper'>
-              <button>Search</button>
+              <button onClick={handleSearchClick}>Search</button>
             </div>
           </div>
         </div>
@@ -125,7 +149,13 @@ const GallerylistFilter = () => {
         <div className="filtered-results">
           {filteredData.length > 0 ? (
             filteredData.map((item) => (
-              <NavLink to={item.href} key={item.id} className='search-items'>{item.name}</NavLink>
+              <div
+                key={item.id}
+                className='search-items'
+                onClick={() => handleGalleryClick(item)}
+              >
+                {item.name}
+              </div>
             ))
           ) : (
             <p>No results found</p>

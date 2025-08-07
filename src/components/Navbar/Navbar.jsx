@@ -22,7 +22,7 @@ const Navbar = () => {
     <div className='container'>
         <div className='top-nav'>
             <div className='logo-warpper'>
-            <img src="enroute-logo.png" alt="" />
+            <img src="../enroute-logo.png" alt="" />
             </div>
             <div className='right-wrapper'>
             <div className='search-container right-comp'>

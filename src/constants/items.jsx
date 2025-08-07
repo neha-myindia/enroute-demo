@@ -1,7 +1,7 @@
 import { href } from "react-router-dom"
 
 export const NavBottomComps=[
-    {id:1,item:"Search Galleries and Exhbitions",href:'/'},
+    {id:1,item:"Search Galleries and Exhibitions",href:'/'},
     {id:2,item:"Gallery List",href:'gallery-list'},
     {id:3,item:"Exhibiting Artists",href:'#'},
     {id:4,item:"Gallery Maps",href:'#'},

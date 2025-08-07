@@ -23,9 +23,13 @@ const router=createBrowserRouter([
       element:<GalleryList/>
     },
     {
-      path:'show-on-map',
-      element:<ShowonMap/>
-    },
+  path: 'show-on-map/:id',
+  element: <ShowonMap />
+},
+{
+  path: 'show-on-map',
+  element: <ShowonMap />
+},
     {
       path:'gallery-list-item-details',
       element:<GalleryItemDetails/>

@@ -137,6 +137,9 @@
 .map-container iframe{
     width: 100%;
 }
+.popup-content {
+  width: 80%;
+}
 }
 
 
@@ -271,5 +274,8 @@
 }
 .map-container iframe{
     width: 100%;
+}
+.popup-content {
+  width: 80%;
 }
 }
