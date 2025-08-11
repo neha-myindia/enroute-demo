@@ -113,7 +113,7 @@ const Filter = ({ onSearch }) => {
       return;
     }
     try {
-      const response = await fetch(`${baseUrl}/api/galleries/?name_startswith=${input}`);
+      const response = await fetch(`${baseUrl}/galleries/?name_startswith=${input}`);
       const data = await response.json();
       const names = data.map(item => item.name);
       setNameSuggestions(names);

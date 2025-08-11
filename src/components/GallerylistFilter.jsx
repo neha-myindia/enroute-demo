@@ -25,7 +25,7 @@ const GallerylistFilter = () => {
   useEffect(() => {
     const fetchGalleryItems = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/galleries/`);
+        const response = await fetch(`${baseUrl}/galleries/`);
         const data = await response.json();
         setAllGalleryItems(data);
         setFilteredData(data.slice(0, 16));
@@ -80,8 +80,8 @@ const GallerylistFilter = () => {
       });
     }
 
-    const response = await fetch(`${baseUrl}/api/galleries/?${params.toString()}`);
-    console.log("Final API URL:", `${baseUrl}/api/galleries/?${params.toString()}`);
+    const response = await fetch(`${baseUrl}/galleries/?${params.toString()}`);
+    console.log("Final API URL:", `${baseUrl}/galleries/?${params.toString()}`);
     const data = await response.json();
     setFilteredData(data);
   } catch (error) {

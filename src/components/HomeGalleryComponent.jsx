@@ -20,7 +20,7 @@ const galleryTopRef = useRef(null);
   useEffect(() => {
     const fetchGalleryItems = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/galleries/`);
+        const response = await fetch(`${baseUrl}/galleries/`);
         const data = await response.json();
         setAllGalleryItems(data);
         setFilteredData(data); 
@@ -56,7 +56,7 @@ const galleryTopRef = useRef(null);
     params.append('open_until', dateRangeEnd);
   }
 
-  const url = `${baseUrl}/api/galleries/?${params.toString()}`;
+  const url = `${baseUrl}/galleries/?${params.toString()}`;
   console.log("Final URL: ", url); 
 
   try {
