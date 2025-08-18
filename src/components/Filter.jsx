@@ -113,11 +113,16 @@ const Filter = ({ onSearch }) => {
       return;
     }
     try {
-      const response = await fetch(`${baseUrl}/galleries/?name_startswith=${input}`);
-      const data = await response.json();
-      const names = data.map(item => item.name);
-      setNameSuggestions(names);
-      setShowSuggestions(true);
+      const response = await fetch(`${baseUrl}/galleries/?name_startswith=${encodeURIComponent(input)}`);
+    const data = await response.json();
+    
+    // ✅ Only show unique, matching suggestions
+    const names = [...new Set(data.map(item => item.name))].filter(n =>
+      n.toLowerCase().startsWith(input.toLowerCase())
+    );
+
+    setNameSuggestions(names);
+    setShowSuggestions(true);
     } catch (error) {
       console.error("Error fetching suggestions:", error);
     }
@@ -187,25 +192,35 @@ const Filter = ({ onSearch }) => {
         </div>
 
         <div className="suburb-area-filter suburb-area-filter-margin" ref={dropdownAreaRef}>
-          <label>Suburb / Area</label>
-          <div className="custom-select" onClick={() => setShowAreaOptions(!showAreaOptions)}>
-            {selectedAreas.length > 0 ? selectedAreas.join(", ") : "Area"} <IoIosArrowDown />
-          </div>
-          {showAreaOptions && (
-            <div className="options-list">
-              {areas.map(area => (
-                <label key={area}>
-                  <input
-                    type="checkbox"
-                    checked={selectedAreas.includes(area)}
-                    onChange={() => handleCheckboxChange(area)}
-                  />
-                  {area}
-                </label>
-              ))}
-            </div>
-          )}
-        </div>
+  <label>Suburb / Area</label>
+
+  <div className="custom-select" onClick={() => setShowAreaOptions(!showAreaOptions)}>
+    <input
+      type="text"
+      readOnly
+      value={selectedAreas.length > 0 ? selectedAreas.join(", ") : ""}
+      placeholder="Area"
+      className="area-input"
+    />
+    <IoIosArrowDown />
+  </div>
+
+  {showAreaOptions && (
+    <div className="options-list">
+      {areas.map(area => (
+        <label key={area}>
+          <input
+            type="checkbox"
+            checked={selectedAreas.includes(area)}
+            onChange={() => handleCheckboxChange(area)}
+          />
+          {area}
+        </label>
+      ))}
+    </div>
+  )}
+</div>
+
 
         <div className="suburb-area-filter" ref={dropdownDatesRef}>
           <label>Date</label>

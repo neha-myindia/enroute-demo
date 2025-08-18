@@ -123,6 +123,7 @@ ul li.active {
     justify-content: flex-end;
     box-sizing: border-box;
     padding: 0 19rem 2rem;
+    width: 100%;
 }
 
 .heading-container h1{
@@ -245,6 +246,7 @@ width: 100%;
 }
 .left-first-row p{
     margin-top: 0;
+    text-align: left;
 }
 .main-comp-wrapper{
     border: 2px solid #777;
@@ -446,10 +448,26 @@ width: 100%;
     align-items: center;
     justify-content: space-between;
 }
+.left-fourth-row .social-icons a{
+    cursor: pointer;
+}
+.area-input {
+  width: 100%;
+  border: none !important;
+  outline: none;
+  background: transparent;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
+}
+
 .company-website{
     color: #1150A3;
     font-weight: 600;
     font-size: 17px;
+    text-decoration: underline;
+    cursor: pointer;
 }
 .company-name{
    color: #000;

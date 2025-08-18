@@ -8,7 +8,7 @@ const GalleryList = () => {
       }, []);
   return (
      <>
-      <Introduction/>
+      <Introduction heading="Search Galleries by name or suburb area"/>
     <GallerylistFilter/></>
   )
 }

@@ -26,6 +26,7 @@ const galleryTopRef = useRef(null);
         setFilteredData(data); 
       } catch (error) {
         console.error("Error fetching gallery items:", error);
+        console.log("Fetching from:", `${baseUrl}/galleries/`);
       }
     };
 
@@ -98,8 +99,8 @@ function truncateWithMore(text, maxChars) {
             <div className='left-side'>
               <div className='left-first-row'>
                 <p>
-                  <span className='company-name'>{component.name}</span>,{' '}
-                  <span className='company-website'>{component.website}</span>
+                  <span className='company-name'>{component.name}</span><br/>
+                  <a  href={`https://${component.website}`} target="_blank" className='company-website'>{component.website}</a>
                 </p>
                 <div className={component.status === 'open' ? 'status-open' : 'status-closed'}>
                   {component.status}
@@ -112,18 +113,16 @@ function truncateWithMore(text, maxChars) {
                   alt="Gallery"
                 />
                 <div style={{fontSize:"14px"}}>
-                  <p className='left-address'>{component.address}, {component.area}</p>
+                  <p className='left-address'>{component.address} </p>
                   <p className='left-contact-no'>{component.contact_number}</p>
                   <p className='opening-hours'>
                     Opening Hours <br />
-                    <span>Mon-Thu {component.opening_hours}<br />
-                      Fri-Sun {component.opening_hours}</span>
+                    <span>{component.opening_hours_full}</span>
                   </p>
                 </div>
               </div>
 
               <div className='left-third-row'>
-                Gallery Overview
                 <p>{component.overview}</p>
               </div>
 
@@ -133,8 +132,8 @@ function truncateWithMore(text, maxChars) {
 
               <div className='left-fourth-row'>
                 <div className='social-icons'>
-                  <a href={component.instagram_url}><TiSocialInstagram /></a>
-                  <a href={component.facebook_url}><FaFacebookSquare /></a>
+                  <a href={component.instagram}><TiSocialInstagram /></a>
+                  <a href={component.facebook}><FaFacebookSquare /></a>
                 </div>
                 <div className='planner-icons'>
                   <a href="#" className='add-to-planner-btn'>Add to Personal Planner</a>
@@ -151,10 +150,12 @@ function truncateWithMore(text, maxChars) {
                   <div key={item.id}>
                     <div className='right-gallery-item'>
                       <div className='left-side-details'>
-                          <h4>{item.title}</h4>
-                        <p className='artist-name'>Artist : <span>{item.artist}</span></p>
-                        <p className='date-of-exhibition'>
-                          Date of Exhibition : <span>{item.start_date} - {item.end_date}</span>
+                        <p className='artist-name' style={{fontWeight:"700"}}>{item.artists.map((artist, index) => (
+    <span key={index} style={{fontWeight:"700"}}>{artist.first_name} {artist.last_name}</span>
+  ))}</p>
+                          <h4 style={{fontWeight:"600",margin: "0.2rem 0"}}>{item.title}</h4>
+                        <p className='date-of-exhibition' style={{fontWeight:"500",margin: "0 0 0.5rem 0",fontSize:"14px"}}>
+                          <span>{item.start_date} - {item.end_date}</span>
                         </p>
                        <div className='gallery-item-overview-wrapper'>
   <span className="gallery-item-overview">
@@ -170,8 +171,12 @@ function truncateWithMore(text, maxChars) {
   )}
 </div>
                         </div>
-                        <div>
-                        <img src={item.image} alt="" />
+                        <div style={{height:"120px",width:"300px",display: "flex",alignItems: "center", justifyContent: "center"}}>
+                     
+                        <img
+                  src={item.images && item.images.length > 0 ? item.images[0].image : 'img1.jpg'}
+                  alt="Gallery" style={{width:"100%",height:"100%",objectFit: "contain"}}
+                />
                       </div>
                       
                     </div>
@@ -196,8 +201,10 @@ function truncateWithMore(text, maxChars) {
                       </div>
             </div>
             <h2>{selectedExhibitionItem.title}</h2>
-            <p className='exhibition-item-artist'><strong>Artist:</strong> {selectedExhibitionItem.artist}</p>
-            <p className='exhibition-item-date'><strong>Date:</strong> {selectedExhibitionItem.start_date} - {selectedExhibitionItem.end_date}</p>
+            <p className='exhibition-item-artist'><strong></strong> {selectedExhibitionItem.artists.map((artist, index) => (
+    <span key={index}>{artist.first_name} {artist.last_name}</span>
+  ))}</p>
+            <p className='exhibition-item-date'><strong></strong> {selectedExhibitionItem.start_date} - {selectedExhibitionItem.end_date}</p>
             <p>{selectedExhibitionItem.description}</p>
           </div>
         </div>

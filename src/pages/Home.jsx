@@ -11,7 +11,7 @@ useEffect(() => {
 
   return (
     <main className=''>
-       <Introduction/>
+       <Introduction heading="Research art galleries and exhibitions for any given date or date range when planning visits to Sydney and its art suburbs"/>
       {/* <Filter/> */}
       <HomeGalleryComponent/>
     </main>
