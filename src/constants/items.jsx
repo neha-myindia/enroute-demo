@@ -3,12 +3,12 @@ import { href } from "react-router-dom"
 export const NavBottomComps=[
     {id:1,item:"Search Galleries and Exhibitions",href:'/'},
     {id:2,item:"Gallery List",href:'gallery-list'},
-    {id:3,item:"Exhibiting Artists",href:'#'},
-    {id:4,item:"Gallery Maps",href:'#'},
+    {id:3,item:"Exhibiting Artists",href:'exhibiting-artists'},
+    {id:4,item:"Gallery Maps",href:'gallery-maps'},
     {id:5,item:"Personal Planner",href:'#'},
     {id:6,item:"Art Fairs",href:'#'},
     {id:7,item:"Art Chauffeurs",href:'#'},
-    {id:8,item:"Featured Art For Sale",href:'#'}
+    {id:8,item:"Featured Art For Sale",href:'art-for-sale'}
 ]
 
 export const GalleryItems=[
@@ -18,29 +18,52 @@ export const GalleryItems=[
         image:"img1.jpg",
         website:"monyarowegallery.com",
         address:"224 West 30 Street, Suite #304",
-        contact_no:"+123 456 7890",
-        opening_hours_weekdays:"10.00 - 17.00",
-        opening_hours_weekends:"11.00 - 16.00",
+        contact_number:"+123 456 7890",
+        opening_hours_full:"10.00 - 17.00",
         overview:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently",
-        facebook_url:"#",
-        instagram_url:"#",
+        facebook:"#",
+        instagram:"#",
         location_on_map:"#",
         status:"Open",
-        items:[
+        exhibitions:[
             {id:1,
             item_name:"IN THE WINDS",
             item_artist:"Emma White",
-            item_exhibition_date:"12 June - 18 June",
-            item_details:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-            item_image:"img2.jpg"
+            start_date: "July 31, 2025",
+           end_date: "August 23, 2025",
+            description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+            images:"img2.jpg"
             },
             {id:2,
             item_name:"DARK",
             item_artist:"Emma White",
-            item_exhibition_date:"12 June - 18 June",
-            item_details:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-            item_image:"img3.jpg"
+          start_date: "July 31, 2025",
+           end_date: "August 23, 2025",
+            description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+            images:"img3.jpg"
             },
+            {
+                "id": 37,
+                "title": "Dozo !",
+                "gallery": 1985,
+                "artists": [
+                    {
+                        "id": 4,
+                        "first_name": "Adam",
+                        "last_name": "Lester"
+                    }
+                ],
+                "start_date": "July 31, 2025",
+                "end_date": "August 23, 2025",
+                "description": "Investigating the relationships between people, places and objects, Adam Lester’s work combines elements of anachronism, nostalgia and humor to create dynamic visual assemblages with an escapist sentimentalism to bygone eras. Figurative and symbolic elements are complemented by a vibrant palette blending high and low culture through the lens of popular culture.\r\n \r\nLester’s work has been exhibited broadly in Australia and has been cited in prominent public & private collections internationally.",
+                "images": [
+                    {
+                        "id": 12,
+                        "image": "http://192.168.1.182:8000/media/exhibition_images/img1_waqes2T.jpg",
+                        "caption": null
+                    }
+                ]
+            }
         ],
     },
     {
@@ -49,12 +72,11 @@ export const GalleryItems=[
         image:"img1.jpg",
         website:"monyarowegallery.com",
         address:"224 West 30 Street, Suite #304",
-        contact_no:"+123 456 7890",
-        opening_hours_weekdays:"10.00 - 17.00",
-        opening_hours_weekends:"11.00 - 16.00",
+        contact_number:"+123 456 7890",
+        opening_hours_full:"11.00 - 16.00",
         overview:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently",
-        facebook_url:"#",
-        instagram_url:"#",
+        facebook:"#",
+        instagram:"#",
         location_on_map:"#",
         status:"Open",
         items:[],
@@ -65,12 +87,11 @@ export const GalleryItems=[
         image:"img1.jpg",
         website:"monyarowegallery.com",
         address:"224 West 30 Street, Suite #304",
-        contact_no:"+123 456 7890",
-        opening_hours_weekdays:"10.00 - 17.00",
-        opening_hours_weekends:"11.00 - 16.00",
+        contact_number:"+123 456 7890",
+        opening_hours_full:"11.00 - 16.00",
         overview:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently",
-        facebook_url:"#",
-        instagram_url:"#",
+        facebook:"#",
+        instagram:"#",
         location_on_map:"#",
         status:"Closed",
         items:[],
@@ -81,21 +102,21 @@ export const GalleryItems=[
         image:"img1.jpg",
         website:"monyarowegallery.com",
         address:"224 West 30 Street, Suite #304",
-        contact_no:"+123 456 7890",
-        opening_hours_weekdays:"10.00 - 17.00",
-        opening_hours_weekends:"11.00 - 16.00",
+        contact_number:"+123 456 7890",
+        opening_hours_full:"11.00 - 16.00",
         overview:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently",
-        facebook_url:"#",
-        instagram_url:"#",
+        facebook:"#",
+        instagram:"#",
         location_on_map:"#",
         status:"Open",
-        items:[
+        exhibitions:[
             {id:1,
-            item_name:"IN THE WINDS",
+            title:"IN THE WINDS",
             item_artist:"Emma White",
-            item_exhibition_date:"12 June - 18 June",
-            item_details:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-            item_image:"img2.jpg"
+           start_date: "July 31, 2025",
+           end_date: "August 23, 2025",
+            description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
+            images:"img2.jpg"
             },
         ],
     },
@@ -182,5 +203,151 @@ export const GalleryItemsDetails=[
             item_image:"img2.jpg"
             },
         ],
+    },
+]
+
+
+export const AllArtists=[
+    {
+        id:1,
+        artist_first_name:"Emma",
+        artist_last_name:"White",
+        title:"IN THE WINDS",
+        gallery_name:"Lorem Ipsum",
+        address:"224 West 30 Street, Suite #304",
+        phone_number:"+123 456 7890",
+        opening_hours:"10.00 - 17.00",
+        website:"monyarowegallery.com",
+        exhibition_date:"12 June - 18 June",
+        exhibition_description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ips.en the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsu"
+    },
+    {
+        id:2,
+        artist_first_name:"Emma",
+        artist_last_name:"White",
+        title:"IN THE WINDS",
+        gallery_name:"Lorem Ipsum",
+        address:"224 West 30 Street, Suite #304",
+        phone_number:"+123 456 7890",
+        opening_hours:"10.00 - 17.00",
+        website:"monyarowegallery.com",
+        exhibition_date:"12 June - 18 June",
+        exhibition_description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ips.en the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsu"
+    },
+    {
+        id:3,
+        artist_first_name:"Emma",
+        artist_last_name:"White",
+        title:"IN THE WINDS",
+        gallery_name:"Lorem Ipsum",
+        address:"224 West 30 Street, Suite #304",
+        phone_number:"+123 456 7890",
+        opening_hours:"10.00 - 17.00",
+        website:"monyarowegallery.com",
+        exhibition_date:"12 June - 18 June",
+        exhibition_description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ips.en the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsu"
+    },
+]
+
+
+
+export const AllArtForSale=[
+    {
+        id:1,
+        artist_first_name:"Emma",
+        artist_last_name:"White",
+        title:"IN THE WINDS",
+        gallery_name:"Lorem Ipsum",
+        address:"224 West 30 Street, Suite #304",
+        phone_number:"+123 456 7890",
+        opening_hours:"10.00 - 17.00",
+        website:"monyarowegallery.com",
+        price:12000,
+        image:"img2.jpg",
+        exhibition_description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ips.en the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsu"
+    },
+    {
+        id:2,
+        artist_first_name:"Emma",
+        artist_last_name:"White",
+        title:"IN THE WINDS",
+        gallery_name:"Lorem Ipsum",
+        address:"224 West 30 Street, Suite #304",
+        phone_number:"+123 456 7890",
+        opening_hours:"10.00 - 17.00",
+        website:"monyarowegallery.com",
+       price:12000,
+        image:"img2.jpg",
+        exhibition_description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ips.en the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsu"
+    },
+    {
+        id:3,
+        artist_first_name:"Emma",
+        artist_last_name:"White",
+        title:"IN THE WINDS",
+        gallery_name:"Lorem Ipsum",
+        address:"224 West 30 Street, Suite #304",
+        phone_number:"+123 456 7890",
+        opening_hours:"10.00 - 17.00",
+        website:"monyarowegallery.com",
+        price:12000,
+        image:"img2.jpg",
+        exhibition_description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ips.en the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsu"
+    },
+    {
+        id:4,
+        artist_first_name:"Emma",
+        artist_last_name:"White",
+        title:"IN THE WINDS",
+        gallery_name:"Lorem Ipsum",
+        address:"224 West 30 Street, Suite #304",
+        phone_number:"+123 456 7890",
+        opening_hours:"10.00 - 17.00",
+        website:"monyarowegallery.com",
+        price:12000,
+        image:"img2.jpg",
+        exhibition_description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ips.en the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsu"
+    },
+    {
+        id:5,
+        artist_first_name:"Emma",
+        artist_last_name:"White",
+        title:"IN THE WINDS",
+        gallery_name:"Lorem Ipsum",
+        address:"224 West 30 Street, Suite #304",
+        phone_number:"+123 456 7890",
+        opening_hours:"10.00 - 17.00",
+        website:"monyarowegallery.com",
+        price:12000,
+        image:"img2.jpg",
+        exhibition_description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ips.en the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsu"
+    },
+    {
+        id:6,
+        artist_first_name:"Emma",
+        artist_last_name:"White",
+        title:"IN THE WINDS",
+        gallery_name:"Lorem Ipsum",
+        address:"224 West 30 Street, Suite #304",
+        phone_number:"+123 456 7890",
+        opening_hours:"10.00 - 17.00",
+        website:"monyarowegallery.com",
+        price:12000,
+        image:"img2.jpg",
+        exhibition_description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ips.en the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsu"
+    },
+    {
+        id:7,
+        artist_first_name:"Emma",
+        artist_last_name:"White",
+        title:"IN THE WINDS",
+        gallery_name:"Lorem Ipsum",
+        address:"224 West 30 Street, Suite #304",
+        phone_number:"+123 456 7890",
+        opening_hours:"10.00 - 17.00",
+        website:"monyarowegallery.com",
+        price:12000,
+        image:"img2.jpg",
+        exhibition_description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ips.en the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsu"
     },
 ]

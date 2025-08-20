@@ -963,3 +963,194 @@ margin: 10vmin 0 0 0;
 .pro-sidebar {
   background: white !important;
 }
+
+
+.artists-filter-search-wrapper{
+    display: flex;
+    flex-direction: row !important;
+    align-items: flex-end !important;
+}
+
+.artist-card{
+    border: 1px solid #999;
+    border-radius: 0.2rem;
+    box-sizing: border-box;
+    margin: 2rem 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+
+
+
+
+
+.artist-container .artist-card .left{
+width: 40%;
+box-sizing: border-box;
+ padding: 1rem;
+}
+.artist-container .artist-card .left .top{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.artist-container .artist-card .left .top p{
+    margin: 0;
+}
+.artist-container .artist-card .gallery-item-overview-wrapper{
+    width: 60%;
+     padding:0 1rem;
+     box-sizing: border-box;
+     font-weight: 600;
+}
+.artist-container .artist-card .gallery-item-overview-wrapper span{
+     font-weight: 400 !important;
+}
+.artist-container .artist-card .left .heading-bold{
+    font-weight: 600;
+}
+.artist-container .artist-card .left .website{
+    color: #1150A3;
+    text-decoration: underline;
+    cursor: pointer;
+}
+.artist-container .artist-card .left .heading-bold span{
+    font-weight: 400;
+}
+.pagination{
+    display: flex;
+    width: 100%;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+}
+.pagination button{
+    background-color: #ffffff;
+    border: 1px solid #999;
+    padding: 0.3rem;
+    width: 60px;
+    height: 40px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 0.3rem;
+    transition: all 0.1s ease;
+}
+.page-btn.active {
+  background: #363636;
+  color: white;
+  border-color: #363636;
+  font-weight: bold;
+}
+.pagination button:hover{
+    background-color: #363636;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  width: 800px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  animation: fadeIn 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+}
+.modal-content input {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+.modal-form-wrapper{
+    height: 100%;
+    width: 50%;
+    padding: 0 2rem;
+    box-sizing: border-box;
+}
+.modal-content .image-wrapper{
+    width: 50%;
+}
+.modal-form-wrapper .login-input{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 1rem 0;
+}
+.modal-form-wrapper .login-input input{
+    width: 100%;
+}
+.modal-form-wrapper .close-btn{
+    border-radius: 100%;
+    padding: 0.3rem;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.modal-form-wrapper h1{
+    margin: 0;
+    text-align: left;
+    font-weight: 500;
+}
+.modal-content button {
+  border: none;
+  cursor: pointer;
+  padding: 0.7rem 0;
+}
+
+.modal-content button[type="submit"] {
+  background: #007bff;
+  color: white;
+}
+
+.modal-content button[type="button"] {
+  background: #ccc;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+
+.art-for-sale-card{
+        border: 1px solid #999;
+    box-sizing: border-box;
+    margin: 2rem 0;
+    padding: 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: space-between;
+    width: 60vmin;
+}
+.art-for-sale-card img{
+    width: 300px;
+    height: 160px;
+}

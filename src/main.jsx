@@ -7,6 +7,10 @@ import Home from './pages/Home.jsx'
 import GalleryList from './pages/GalleryList.jsx'
 import { ShowonMap } from './pages/ShowonMap.jsx'
 import GalleryItemDetails from './pages/GalleryItemDetails.jsx'
+import ExhibitingArtists from './pages/ExhibitingArtists.jsx'
+import ArtForSale from './pages/ArtForSale.jsx'
+import GalleryMaps from './pages/GalleryMaps.jsx'
+import EditPage from './pages/EditPage.jsx'
 
 
 const router=createBrowserRouter([
@@ -21,6 +25,22 @@ const router=createBrowserRouter([
     ,{
       path:'gallery-list',
       element:<GalleryList/>
+    },
+    {
+      path:'exhibiting-artists',
+      element:<ExhibitingArtists/>
+    },
+    {
+      path:'art-for-sale',
+      element:<ArtForSale/>
+    },
+     {
+      path:'login-page',
+      element:<EditPage/>
+    },
+    {
+      path:'gallery-maps',
+      element:<GalleryMaps/>
     },
     {
   path: 'show-on-map/:id',

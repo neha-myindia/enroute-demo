@@ -12,7 +12,8 @@ import { useParams } from 'react-router-dom';
 const defaultIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet/dist/images/marker-icon.png",
   iconSize: [25, 41],
-  iconAnchor: [12, 41]
+  iconAnchor: [17, 55],      
+  popupAnchor: [1, -40], 
 });
 
 
@@ -24,6 +25,21 @@ const highlightedIcon = L.icon({
   popupAnchor: [1, -40],     
   shadowSize: [41, 41]
 });
+
+const createLabelIcon = (name) => {
+  return L.divIcon({
+    className: "custom-marker", 
+    html: `
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <img src="https://unpkg.com/leaflet/dist/images/marker-icon.png" 
+             style="width:25px; height:41px;" />
+        <span style="margin-top:2px; font-size:12px; color:#ffffff; padding:2px 10px; background-color:#363636; font-weight:500; white-space:nowrap;">
+          ${name}
+        </span>
+      </div>
+    `,
+  });
+};
 
 function ChangeMapView({ coords, zoom }) {
   const map = useMap();
@@ -62,7 +78,6 @@ const [selectedFromURL, setSelectedFromURL] = useState(null);
   };
 
  const handleGalleryClick = (gallery) => {
-  fetchGalleries(gallery.area);
   setSelectedGallery(gallery); 
   setSidebarOpen(true);
 };
@@ -89,7 +104,7 @@ const [selectedFromURL, setSelectedFromURL] = useState(null);
       <MapContainer
         center={[28.6139, 77.2090]}
         zoom={12}
-        style={{ height: "100vh", width: "80%", marginTop:"30vmin" }}
+        style={{ height: "100vh", width: "80%", marginTop:"10vmin" }}
       >
         <TileLayer
   url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
@@ -101,10 +116,14 @@ const [selectedFromURL, setSelectedFromURL] = useState(null);
         )}
 
         {galleries.map(g => (
-  <Marker
+ <Marker
     key={g.id}
     position={[g.lat, g.long]}
-    icon={selectedFromURL && g.id === selectedFromURL.id ? highlightedIcon : defaultIcon}
+    icon={
+      selectedFromURL && g.id === selectedFromURL.id
+        ? highlightedIcon
+        : createLabelIcon(g.name)
+    }
     eventHandlers={{
       click: () => handleGalleryClick(g)
     }}
@@ -136,6 +155,9 @@ const [selectedFromURL, setSelectedFromURL] = useState(null);
             </MenuItem>
             <MenuItem>
               <strong>Address:</strong><br/> {selectedGallery.address}
+            </MenuItem>
+             <MenuItem>
+              <strong>Contact Number:</strong><br/> {selectedGallery.contact_number}
             </MenuItem>
             <MenuItem>
               <strong>Area:</strong><br/> {selectedGallery.area}

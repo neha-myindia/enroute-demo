@@ -1,22 +1,37 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { FaSearch } from "react-icons/fa";
 import './Navbar.css';
 import {NavBottomComps} from '../../constants/items.jsx';
 import { ImMenu } from "react-icons/im";
 import { RiCloseLargeFill } from "react-icons/ri";
 import { NavLink } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const Navbar = () => {
 
     const [activeIndex, setActiveIndex] = useState(null);
+    const [showLogin, setShowLogin] = useState(false);
+    const navigate=useNavigate();
 
     const[bars, setBars]=useState(false)
     const toggleNavbar = () => {
     setBars(prev => !prev);
     console.log("Toggled navbar:", !bars);
 };
+
+ useEffect(() => {
+    if (showLogin) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [showLogin]);
+
+  const handleSubmit=()=>(
+    navigate('login-page')
+  )
 
   return (
     <div className='container'>
@@ -40,13 +55,56 @@ const Navbar = () => {
             </div>
             <div className='right-comp'>
                 <a href="#">
-                    <button>
+                   <button onClick={() => setShowLogin(true)}>
                     Gallery sign in
                 </button>
                 </a>
             </div>
             </div>
         </div>
+          {showLogin && (
+        <div className="modal-overlay">
+          {/* <div className="modal-content">
+            <h2>Gallery Login</h2>
+            <form>
+              <input type="text" placeholder="Username" required />
+              <input type="password" placeholder="Password" required />
+              <button type="submit">Login</button>
+              <button type="button" onClick={() => setShowLogin(false)}>
+                Close
+              </button>
+            </form>
+          </div> */}
+          <div className="modal-content">
+            <div className='image-wrapper'>
+                <img src="loginpop-image.jpg" alt="" style={{width:"100%"}}/>
+            </div>
+            <div className='modal-form-wrapper'>
+                <button type="button" onClick={() => setShowLogin(false)} className='close-btn'>
+                X
+              </button>
+                <h1>Sign In</h1>
+                <form action="">
+                    <div className='login-input'>
+                        <label htmlFor="username">Username</label>
+                    <input type="text" />
+                    </div>
+                    <div className='login-input'>
+                        <label htmlFor="password">Password</label>
+                    <input type="password" />
+                    </div>
+                    <div style={{display:"flex",alignItems:"center",margin:"1rem 0 2rem 0",justifyContent:"space-between",color:"#1150a3",fontSize:"14px"}}>
+                        <div style={{display:"flex",alignItems:"center"}}>
+                            <input type="checkbox" name="" id="" />Remember me
+                        </div>
+                        <div>Forgot Password?</div>
+                    </div>
+                    <button onClick={handleSubmit} style={{backgroundColor:"#363636",color:"#ffffff"}}>Sign In</button>
+                </form>
+            </div>
+          </div>
+        </div>
+      )}
         <div className='bottom-nav'>
             <ul>
                 {NavBottomComps.map((navItem,index) => (

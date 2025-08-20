@@ -3,6 +3,13 @@ import Filter from './Filter';
 import { TiSocialInstagram } from "react-icons/ti";
 import { FaFacebookSquare } from "react-icons/fa";
 import '../components/ResponsiveLayout.css';
+import { GalleryItems } from '../constants/items';
+import { useNavigate } from 'react-router-dom';
+import { FaLessThan } from "react-icons/fa6";
+import { FaGreaterThan } from "react-icons/fa6";
+
+
+
 
 
 
@@ -11,6 +18,7 @@ const HomeGalleryComponent = () => {
   const [allGalleryItems, setAllGalleryItems] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [selectedExhibitionItem, setSelectedExhibitionItem] = useState(null);
+  const navigate=useNavigate();
 
   const [currentPage, setCurrentPage] = useState(1);
 const itemsPerPage = 10;
@@ -32,6 +40,18 @@ const galleryTopRef = useRef(null);
 
     fetchGalleryItems();
   }, []);
+
+
+  const handleMoreClick = (component) => {
+    navigate("/gallery-list-item-details", { state: { id: component.id } });
+  };
+
+
+
+// useEffect(() => {
+//   setAllGalleryItems(GalleryItems);
+//   setFilteredData(GalleryItems);
+// }, []);
 
   const handleSearch = async ({ name, areas, dateType, specificDate, dateRangeStart, dateRangeEnd }) => {
   const params = new URLSearchParams();
@@ -83,6 +103,25 @@ useEffect(() => {
   }
 }, [currentPage]);
 
+ const getPageNumbers = () => {
+    const pages = [];
+    let start = Math.max(1, currentPage - 2);
+    let end = Math.min(totalPages, currentPage + 2);
+
+    if (currentPage <= 3) {
+      start = 1;
+      end = Math.min(3, totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      start = Math.max(totalPages - 4, 1);
+      end = totalPages;
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  };
+
 function truncateWithMore(text, maxChars) {
   if (text.length <= maxChars) return text;
   return text.slice(0, maxChars).trim() + '...';
@@ -119,6 +158,10 @@ function truncateWithMore(text, maxChars) {
                     Opening Hours <br />
                     <span>{component.opening_hours_full}</span>
                   </p>
+                  <p className='opening-hours'>
+                    Closed Days <br />
+                    <span>{component.days_closed}</span>
+                  </p>
                 </div>
               </div>
 
@@ -127,7 +170,7 @@ function truncateWithMore(text, maxChars) {
               </div>
 
               <div className='left-more-btn'>
-                <a href="#">+ More</a>
+                <a href="#" onClick={()=>handleMoreClick(component)}>+ More</a>
               </div>
 
               <div className='left-fourth-row'>
@@ -196,8 +239,8 @@ function truncateWithMore(text, maxChars) {
           <div className="popup-content" onClick={e => e.stopPropagation()}>
             <div className='button-wrapper'><button onClick={() => setSelectedExhibitionItem(null)}>X</button></div>
             <div style={{width:"100%",textAlign:"center",display: "flex",alignItems: "center", justifyContent: "center"}}>
-              <div style={{width:"260px",height:"150px"}}>
-                        <img src={selectedExhibitionItem.image} alt="" style={{width:"100%",height:"100%"}}/>
+              <div style={{height:"200px",width:"500px",display: "flex",alignItems: "center", justifyContent: "center"}}>
+                        <img src={selectedExhibitionItem.images && selectedExhibitionItem.images.length > 0 ? selectedExhibitionItem.images[0].image : 'img1.jpg'} alt="" style={{width:"100%",height:"100%",objectFit: "contain"}}/>
                       </div>
             </div>
             <h2>{selectedExhibitionItem.title}</h2>
@@ -210,27 +253,47 @@ function truncateWithMore(text, maxChars) {
         </div>
       )}
       </div>
-      <button
-  onClick={() => {
-    setCurrentPage((prev) => Math.max(prev - 1, 1));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }}
-  disabled={currentPage === 1}
->
-  Prev
-</button>
+      <div className='pagination'>
+        <button
+          onClick={() => setCurrentPage(1)}
+          disabled={currentPage === 1}
+        >
+           <FaLessThan/> <FaLessThan/>
+        </button>
 
-<span>Page {currentPage} of {totalPages}</span>
+        <button
+          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+          disabled={currentPage === 1}
+        >
+          <FaLessThan/>
+        </button>
 
-<button
-  onClick={() => {
-    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }}
-  disabled={currentPage === totalPages}
->
-  Next
-</button>
+        {getPageNumbers().map((num) => (
+          <button
+            key={num}
+            onClick={() => setCurrentPage(num)}
+            className={`page-btn ${currentPage === num ? "active" : ""}`}
+          >
+            {num}
+          </button>
+        ))}
+
+        <button
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
+          disabled={currentPage === totalPages}
+        >
+          <FaGreaterThan/>
+        </button>
+
+        <button
+          onClick={() => setCurrentPage(totalPages)}
+          disabled={currentPage === totalPages}
+        >
+          <FaGreaterThan/><FaGreaterThan/>
+        </button>
+      </div>
 
     </div>
   );
