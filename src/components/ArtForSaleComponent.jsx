@@ -6,6 +6,7 @@ const ArtForSaleComponent = () => {
 
       const [selectedExhibitionItem, setSelectedExhibitionItem] = useState(null);
       const [expandedArtists, setExpandedArtists] = useState({});
+      const [selectedImage, setSelectedImage] = useState(null);
 
 function truncateWithMore(text, maxChars) {
   if (text.length <= maxChars) return text;
@@ -36,11 +37,38 @@ function truncateWithMore(text, maxChars) {
                     <p className='bottom heading-bold'>Price : <span>{artist.price}</span></p>
                     </div>
                     <div>
-                      <img src={artist.image} alt="" />
+                      <img
+              src={artist.image}
+              alt={artist.title}
+              style={{ width: "100%", height: "300px", objectFit: "cover", cursor: "pointer", borderRadius: "10px" }}
+              onClick={() => setSelectedImage(artist.image)} // open modal with this image
+            />
                     </div>
                     <div style={{fontWeight:"600",margin:"0 0 1rem 0"}}>ART FOR SALE !</div>
                 </div>
             ))}
+            {selectedImage && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+          onClick={() => setSelectedImage(null)}
+          style={{
+            position: "fixed",
+            inset: 0,
+            backgroundColor: "rgba(0,0,0,0.7)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 1000,
+            cursor: "pointer"
+          }}
+        >
+          <img
+            src={selectedImage}
+            alt="Enlarged"
+            style={{ maxHeight: "90%", maxWidth: "90%", borderRadius: "10px" }}
+          />
+        </div>
+      )}
         </div>
     </div>
   )

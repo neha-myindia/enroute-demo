@@ -70,22 +70,12 @@ const GalleryItemDetails = () => {
               gallery.exhibitions.map((item, index) => (
                 <div key={item.id}>
                   <div className='right-gallery-item'>
-                    <div><img src={item.image} alt={item.item_name} /></div>
+                    <div style={{height:"250px",width:"375px",display: "flex",alignItems: "center", justifyContent: "center"}}><img src={item.images && item.images.length > 0 ? item.images[0].image : 'img2.jpg'} alt={item.item_name}  style={{width:"100%",height:"100%",objectFit:"contain"}}/></div>
                     <div className='left-side-details'>
                       <h4>{item.title}</h4>
                       <p className='artist-name'>Artist : <span>{item.artist}</span></p>
                       <p className='date-of-exhibition'>Date of Exhibition : <span>{item.start_date} - {item.end_date}</span></p>
                       <p className='gallery-item-overview'>{item.description}</p>
-                    </div>
-                  </div>
-                  <div className='left-fourth-row'>
-                    <div className='planner-icons'>
-                      <a href="#" className='add-to-planner-btn'>Add to Personal Planner</a>
-                      <a href='show-on-map'>Show on Map</a>
-                    </div>
-                    <div className='social-icons'>
-                      <a href={gallery.instagram_url}><TiSocialInstagram /></a>
-                      <a href={gallery.facebook_url}><FaFacebookSquare /></a>
                     </div>
                   </div>
                   {index !== gallery.exhibitions.length - 1 && <hr className='partition-line' />}
@@ -96,6 +86,16 @@ const GalleryItemDetails = () => {
                 <p>No exhibitions for the selected date range.</p>
               </div>
             )}
+            <div className='left-fourth-row'>
+                    <div className='planner-icons'>
+                      <a href="#" className='add-to-planner-btn'>Add to Personal Planner</a>
+                      <a href={`/show-on-map/${gallery.id}`}>Show on Map</a>
+                    </div>
+                    <div className='social-icons'>
+                      <a href={gallery.instagram_url}><TiSocialInstagram /></a>
+                      <a href={gallery.facebook_url}><FaFacebookSquare /></a>
+                    </div>
+                  </div>
           </div>
         </div>
       </div>

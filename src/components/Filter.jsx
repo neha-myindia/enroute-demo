@@ -10,6 +10,7 @@ const dates = ["Today", "Specific Date", "Date Range"];
 
 const Filter = ({ onSearch }) => {
   const baseUrl = import.meta.env.VITE_API_URL;
+  const [allGalleryNames, setAllGalleryNames] = useState([]);
   const [name, setName] = useState('');
   const [nameSuggestions, setNameSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -26,6 +27,23 @@ const Filter = ({ onSearch }) => {
   const [specificDate, setSpecificDate] = useState('');
   const [dateRangeStart, setDateRangeStart] = useState('');
   const [dateRangeEnd, setDateRangeEnd] = useState('');
+
+  const [sortboxopen,setSortboxopen]=useState(false);
+
+  useEffect(() => {
+  const fetchGalleryNames = async () => {
+    try {
+      const response = await fetch(`${baseUrl}/galleries/`);
+      const data = await response.json();
+      const names = [...new Set(data.map(item => item.name))]; // unique names
+      setAllGalleryNames(names);
+      setNameSuggestions(names); // initially all
+    } catch (error) {
+      console.error("Error fetching gallery names:", error);
+    }
+  };
+  fetchGalleryNames();
+}, [baseUrl]);
 
    useEffect(() => {
       const fetchGalleryItems = async () => {
@@ -108,43 +126,37 @@ const Filter = ({ onSearch }) => {
 
   const getSelectedDateText = () => {
     if (selectedDates === "Specific Date" && specificDate) {
-      return `Specific Date: ${specificDate}`;
+      return `${specificDate}`;
     }
     if (selectedDates === "Date Range" && dateRangeStart && dateRangeEnd) {
-      return `Range: ${dateRangeStart} to ${dateRangeEnd}`;
+      return `${dateRangeStart} to ${dateRangeEnd}`;
     }
     return selectedDates;
   };
 
-  const handleNameChange = async (e) => {
-    const input = e.target.value;
-    setName(input);
-    if (input.length === 0) {
-      setNameSuggestions([]);
-      setShowSuggestions(false);
-      return;
-    }
-    try {
-      const response = await fetch(`${baseUrl}/galleries/?name_startswith=${encodeURIComponent(input)}`);
-    const data = await response.json();
-    
-    // ✅ Only show unique, matching suggestions
-    const names = [...new Set(data.map(item => item.name))].filter(n =>
-      n.toLowerCase().startsWith(input.toLowerCase())
-    );
+ const handleNameChange = (e) => {
+  const input = e.target.value;
+  setName(input);
 
-    setNameSuggestions(names);
+  if (input.length === 0) {
+    setNameSuggestions(allGalleryNames); // show all when empty
     setShowSuggestions(true);
-    } catch (error) {
-      console.error("Error fetching suggestions:", error);
-    }
-  };
+    return;
+  }
 
-  const handleSuggestionClick = (suggestion) => {
-    setName(suggestion);
-    setNameSuggestions([]);
-    setShowSuggestions(false);
-  };
+  // Match anywhere (case insensitive)
+  const filtered = allGalleryNames.filter(n =>
+    n.toLowerCase().includes(input.toLowerCase())
+  );
+
+  setNameSuggestions(filtered);
+  setShowSuggestions(true);
+};
+
+ const handleSuggestionClick = (suggestion) => {
+  setName(suggestion);
+  setShowSuggestions(false);
+};
 
   return (
     <div className='filter-container'>
@@ -155,7 +167,13 @@ const Filter = ({ onSearch }) => {
         </div>
         <div className='filter-right-menu'>
           <div className='icon'><MdViewModule /></div>
-          <div className='sort-by-btn'>sort by<IoIosArrowDown /></div>
+          <div className='sort-by-btn' onClick={()=>setSortboxopen(!sortboxopen)}>sort by<IoIosArrowDown /></div>
+          {sortboxopen && (<div className='sort-box-filter-page'>
+            <ul>
+              <li>Gallery Name (A-Z)</li>
+              <li>Gallery Name (Z-A)</li>
+            </ul>
+          </div>)}
         </div>
       </div>
 
@@ -249,7 +267,7 @@ const Filter = ({ onSearch }) => {
                       name="date"
                       value={option}
                       checked={selectedDates === option}
-                      onChange={() => {setSelectedDates(option);setShowDatesOptions(false);}
+                      onChange={() => {setSelectedDates(option);}
                     }
                     />
                     {option}

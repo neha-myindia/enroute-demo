@@ -351,3 +351,18 @@ export const AllArtForSale=[
         exhibition_description:"In this they are to make a type of specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ips.en the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsu"
     },
 ]
+
+
+
+export const areas = [
+  {id:1,area:"All"},
+  {id:2,area:"Alexandria/Zetland"},
+  {id:3,area:"Chippendale/Darlington"},
+  {id:4,area:"City/CBD"},
+  {id:5,area:"Darlinghurst/Woolloomooloo"},
+  {id:6,area:"North Shore/Manly"},
+  {id:7,area:"Paddington/Woollahra"},
+  {id:8,area:"Potts Point/Rushcutters Bay"},
+  {id:9,area:"Redfern/Waterloo"},
+  {id:10,area:"Surry Hills"}
+];

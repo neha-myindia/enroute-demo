@@ -42,8 +42,8 @@ const galleryTopRef = useRef(null);
   }, []);
 
 
-  const handleMoreClick = (component) => {
-    navigate("/gallery-list-item-details", { state: { id: component.id } });
+  const handleMoreClick = (gallery) => {
+    navigate(`/gallery-list-item-details/${gallery.id}`, { state: { id: gallery.id } });
   };
 
 
@@ -105,14 +105,14 @@ useEffect(() => {
 
  const getPageNumbers = () => {
     const pages = [];
-    let start = Math.max(1, currentPage - 2);
-    let end = Math.min(totalPages, currentPage + 2);
+    let start = Math.max(1, currentPage - 1);
+    let end = Math.min(totalPages, currentPage + 1);
 
     if (currentPage <= 3) {
       start = 1;
       end = Math.min(3, totalPages);
     } else if (currentPage >= totalPages - 2) {
-      start = Math.max(totalPages - 4, 1);
+      start = Math.max(totalPages - 2, 1);
       end = totalPages;
     }
 
@@ -147,12 +147,13 @@ function truncateWithMore(text, maxChars) {
               </div>
 
               <div className='left-second-row'>
-                <img
-                  src={component.images && component.images.length > 0 ? component.images[0].image : 'img1.jpg'}
+                <div style={{height:"120px",width:"300px",display: "flex",alignItems: "center", justifyContent: "center"}}><img
+                  src={component.images && component.images.length > 0 ? component.images[0].image : 'img2.jpg'}
                   alt="Gallery"
-                />
-                <div style={{fontSize:"14px"}}>
-                  <p className='left-address'>{component.address} </p>
+                  style={{width:"100%",height:"100%",objectFit:"contain"}} 
+                /></div>
+                <div style={{fontSize:"14px",width:"50%"}}>
+                  <p className='left-address'>{component.address} . </p>
                   <p className='left-contact-no'>{component.contact_number}</p>
                   <p className='opening-hours'>
                     Opening Hours <br />
@@ -170,7 +171,7 @@ function truncateWithMore(text, maxChars) {
               </div>
 
               <div className='left-more-btn'>
-                <a href="#" onClick={()=>handleMoreClick(component)}>+ More</a>
+                <div onClick={()=>handleMoreClick(gallery)}>+ More</div>
               </div>
 
               <div className='left-fourth-row'>
