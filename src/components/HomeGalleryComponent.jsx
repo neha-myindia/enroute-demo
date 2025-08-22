@@ -8,6 +8,117 @@ import { useNavigate } from 'react-router-dom';
 import { FaLessThan } from "react-icons/fa6";
 import { FaGreaterThan } from "react-icons/fa6";
 
+const ImageSlider = ({ images }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  if (!images || images.length === 0) {
+    return (
+      <div style={{
+        height: "120px",
+        width: "300px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+        <img
+          src="img1.jpg"
+          alt="Gallery"
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+        />
+      </div>
+    );
+  }
+
+  // If only one image -> show directly
+  if (images.length === 1) {
+    return (
+      <div style={{
+        height: "120px",
+        width: "300px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+      }}>
+        <img
+          src={images[0].image}
+          alt="Gallery"
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+        />
+      </div>
+    );
+  }
+
+  // Multiple images -> slider
+  const prevSlide = () => {
+    setCurrentIndex(prev =>
+      prev === 0 ? images.length - 1 : prev - 1
+    );
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex(prev =>
+      prev === images.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  return (
+    <div style={{
+      position: "relative",
+      height: "120px",
+      width: "300px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      overflow: "hidden",
+    }}>
+      <img
+        src={images[currentIndex].image}
+        alt="Gallery"
+        style={{ width: "100%", height: "100%", objectFit: "contain" }}
+      />
+
+      {/* Left Arrow */}
+      <button
+        onClick={prevSlide}
+        style={{
+          position: "absolute",
+          left: "5px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          background: "rgba(0,0,0,0.5)",
+          color: "#fff",
+          border: "none",
+          borderRadius: "50%",
+          width: "25px",
+          height: "25px",
+          cursor: "pointer",
+        }}
+      >
+        ‹
+      </button>
+
+      {/* Right Arrow */}
+      <button
+        onClick={nextSlide}
+        style={{
+          position: "absolute",
+          right: "5px",
+          top: "50%",
+          transform: "translateY(-50%)",
+          background: "rgba(0,0,0,0.5)",
+          color: "#fff",
+          border: "none",
+          borderRadius: "50%",
+          width: "25px",
+          height: "25px",
+          cursor: "pointer",
+        }}
+      >
+        ›
+      </button>
+    </div>
+  );
+};
 
 
 
@@ -28,13 +139,13 @@ const galleryTopRef = useRef(null);
   useEffect(() => {
     const fetchGalleryItems = async () => {
       try {
-        const response = await fetch(`${baseUrl}/galleries/`);
+        const response = await fetch(`${baseUrl}/api/galleries/`);
         const data = await response.json();
         setAllGalleryItems(data);
         setFilteredData(data); 
       } catch (error) {
         console.error("Error fetching gallery items:", error);
-        console.log("Fetching from:", `${baseUrl}/galleries/`);
+        console.log("Fetching from:", `${baseUrl}/api/galleries/`);
       }
     };
 
@@ -77,7 +188,7 @@ const galleryTopRef = useRef(null);
     params.append('open_until', dateRangeEnd);
   }
 
-  const url = `${baseUrl}/galleries/?${params.toString()}`;
+  const url = `${baseUrl}/api/galleries/?${params.toString()}`;
   console.log("Final URL: ", url); 
 
   try {
@@ -147,11 +258,12 @@ function truncateWithMore(text, maxChars) {
               </div>
 
               <div className='left-second-row'>
-                <div style={{height:"120px",width:"300px",display: "flex",alignItems: "center", justifyContent: "center"}}><img
+                {/* <div style={{height:"120px",width:"300px",display: "flex",alignItems: "center", justifyContent: "center"}}><img
                   src={component.images && component.images.length > 0 ? component.images[0].image : 'img2.jpg'}
                   alt="Gallery"
                   style={{width:"100%",height:"100%",objectFit:"contain"}} 
-                /></div>
+                /></div> */}
+                <ImageSlider images={component.images} />
                 <div style={{fontSize:"14px",width:"50%"}}>
                   <p className='left-address'>{component.address} . </p>
                   <p className='left-contact-no'>{component.contact_number}</p>
@@ -215,13 +327,14 @@ function truncateWithMore(text, maxChars) {
   )}
 </div>
                         </div>
-                        <div style={{height:"120px",width:"300px",display: "flex",alignItems: "center", justifyContent: "center"}}>
+                        {/* <div style={{height:"120px",width:"300px",display: "flex",alignItems: "center", justifyContent: "center"}}>
                      
                         <img
                   src={item.images && item.images.length > 0 ? item.images[0].image : 'img1.jpg'}
                   alt="Gallery" style={{width:"100%",height:"100%",objectFit: "contain"}}
                 />
-                      </div>
+                      </div> */}
+                      <ImageSlider images={item.images} />
                       
                     </div>
                     {index !== component.exhibitions.length - 1 && <hr className='partition-line' />}

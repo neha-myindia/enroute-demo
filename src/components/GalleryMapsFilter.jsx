@@ -20,7 +20,7 @@ const GalleryMapsFilter = ({ onSearch }) => {
 //    useEffect(() => {
 //       const fetchGalleryItems = async () => {
 //         try {
-//           const response = await fetch(`${baseUrl}/galleries/areas/`);
+//           const response = await fetch(`${baseUrl}/api/galleries/areas/`);
 //           const data = await response.json();
 //           setAreas(data.areas);
 //         } catch (error) {
@@ -60,7 +60,7 @@ const GalleryMapsFilter = ({ onSearch }) => {
       return;
     }
     try {
-      const response = await fetch(`${baseUrl}/galleries/?name_startswith=${encodeURIComponent(input)}`);
+      const response = await fetch(`${baseUrl}/api/galleries/?name_startswith=${encodeURIComponent(input)}`);
     const data = await response.json();
     
     // ✅ Only show unique, matching suggestions

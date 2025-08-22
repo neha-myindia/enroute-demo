@@ -22,7 +22,7 @@ const GalleryItemDetails = () => {
 
     const fetchDetails = async () => {
       try {
-        const res = await fetch(`${baseUrl}/galleries/${galleryId}/`);
+        const res = await fetch(`${baseUrl}/api/galleries/${galleryId}/`);
         const data = await res.json();
         setGallery(data);
       } catch (err) {
@@ -52,8 +52,7 @@ const GalleryItemDetails = () => {
                 <p className='left-address'>{gallery.address} | {gallery.contact_number}</p>
                 <p className='opening-hours left-opening-hours'>
                   <span className='left-opening-hours-heading'>Opening Hours:</span>
-                  <span>Mon-Thu {gallery.opening_hours_weekdays}<br />
-                    Fri-Sun {gallery.opening_hours_weekends}</span>
+                  <span>{gallery.opening_hours_full}</span>
                 </p>
                 <div className={gallery.status === 'open' ? 'status-open' : 'status-closed'}>
                   {gallery.status}
@@ -92,8 +91,8 @@ const GalleryItemDetails = () => {
                       <a href={`/show-on-map/${gallery.id}`}>Show on Map</a>
                     </div>
                     <div className='social-icons'>
-                      <a href={gallery.instagram_url}><TiSocialInstagram /></a>
-                      <a href={gallery.facebook_url}><FaFacebookSquare /></a>
+                      <a href={gallery.instagram}><TiSocialInstagram /></a>
+                      <a href={gallery.facebook}><FaFacebookSquare /></a>
                     </div>
                   </div>
           </div>

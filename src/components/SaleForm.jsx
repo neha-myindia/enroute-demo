@@ -2,7 +2,8 @@ import React, { useState } from "react";
 
 const SaleForm = () => {
   const [formData, setFormData] = useState({
-    artistName: "",
+    artistFirstName: "",
+    artistLastName: "",
     artImage: null,
     artPrice: "",
     galleryName: "",
@@ -48,7 +49,8 @@ const SaleForm = () => {
 
     setSuccess("Artwork successfully listed for sale!");
     setFormData({
-      artistName: "",
+     artistFirstName: "",
+     artistLastName: "",
       artImage: null,
       artPrice: "",
       galleryName: "",
@@ -60,18 +62,26 @@ const SaleForm = () => {
 
   return (
     <form className="sale-form" onSubmit={handleSubmit}>
-      <h2>Put Artwork For Sale</h2>
+      <h2>Add / Modify   Art For Sale</h2>
 
-      <label>Artist Name *</label>
+      <div className="wrap-in-line"><div><label>Artist First Name * : </label>
       <input
         type="text"
-        name="artistName"
-        value={formData.artistName}
+        name="artistFirstName"
+        value={formData.artistFirstName}
         onChange={handleChange}
-        placeholder="Enter artist name"
-      />
+        placeholder="Enter artist first name"
+      /></div>
+       <div><label>Artist Last Name *</label>
+      <input
+        type="text"
+        name="artistLastName"
+        value={formData.artistLastName}
+        onChange={handleChange}
+        placeholder="Enter artist last name"
+      /></div></div>
 
-      <label>Art Name *</label>
+      <label>Artwork Title *</label>
       <input
         type="text"
         name="artName"
@@ -80,7 +90,7 @@ const SaleForm = () => {
         placeholder="Enter artwork name"
       />
 
-      <label>Art Price (₹) *</label>
+      <label>Price (Australian Dollars) *</label>
       <input
         type="text"
         name="artPrice"
@@ -125,7 +135,7 @@ const SaleForm = () => {
       {error && <p className="error-msg">{error}</p>}
       {success && <p className="success-msg">{success}</p>}
 
-      <button type="submit">Submit</button>
+      <button type="submit">Add / Modify</button>
     </form>
   );
 };

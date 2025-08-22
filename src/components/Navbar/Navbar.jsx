@@ -11,6 +11,18 @@ import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
 
+  const [credentials, setCredentials] = useState({
+  external_user_id: "",
+  password: ""
+});
+
+const handleChange = (e) => {
+  setCredentials({
+    ...credentials,
+    [e.target.name]: e.target.value
+  });
+};
+
     const [activeIndex, setActiveIndex] = useState(null);
     const [showLogin, setShowLogin] = useState(false);
     const navigate=useNavigate();
@@ -28,10 +40,40 @@ const Navbar = () => {
       document.body.style.overflow = "auto";
     }
   }, [showLogin]);
+  const baseUrl = import.meta.env.VITE_API_URL;
 
-  const handleSubmit=()=>(
-    navigate('login-page')
-  )
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const response = await fetch(`${baseUrl}/api/login/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(credentials)
+    });
+
+    if (!response.ok) {
+      throw new Error("Invalid username or password");
+    }
+
+    const data = await response.json();
+    console.log("Login Success:", data);
+
+    // Example: Save token in localStorage
+    localStorage.setItem("authToken", data.token);
+
+    // Redirect to dashboard or gallery page
+    navigate("/login-page");
+
+    setShowLogin(false); // close modal
+  } catch (error) {
+    console.error("Login error:", error.message);
+    alert("Invalid credentials, please try again.");
+  }
+};
+
 
   return (
     <div className='container'>
@@ -64,17 +106,7 @@ const Navbar = () => {
         </div>
           {showLogin && (
         <div className="modal-overlay">
-          {/* <div className="modal-content">
-            <h2>Gallery Login</h2>
-            <form>
-              <input type="text" placeholder="Username" required />
-              <input type="password" placeholder="Password" required />
-              <button type="submit">Login</button>
-              <button type="button" onClick={() => setShowLogin(false)}>
-                Close
-              </button>
-            </form>
-          </div> */}
+         
           <div className="modal-content">
             <div className='image-wrapper'>
                 <img src="loginpop-image.jpg" alt="" style={{width:"100%"}}/>
@@ -86,12 +118,22 @@ const Navbar = () => {
                 <h1>Sign In</h1>
                 <form action="">
                     <div className='login-input'>
-                        <label htmlFor="username">Username</label>
-                    <input type="text" />
+                        <label htmlFor="external_user_id">Username</label>
+                    <input 
+  type="text" 
+  name="external_user_id"
+  value={credentials.external_user_id} 
+  onChange={handleChange}
+/>
                     </div>
                     <div className='login-input'>
                         <label htmlFor="password">Password</label>
-                    <input type="password" />
+                    <input 
+  type="password" 
+  name="password"
+  value={credentials.password} 
+  onChange={handleChange}
+/>
                     </div>
                     <div style={{display:"flex",alignItems:"center",margin:"1rem 0 2rem 0",justifyContent:"space-between",color:"#1150a3",fontSize:"14px"}}>
                         <div style={{display:"flex",alignItems:"center"}}>

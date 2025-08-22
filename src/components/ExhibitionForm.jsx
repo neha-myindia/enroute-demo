@@ -6,7 +6,8 @@ const ExhibitionForm = () => {
     id: null,
     exhibitionName: "",
     exhibitionDates: "",
-    artistName: "",
+     artistFirstName: "",
+     artistLastName: "",
     description: "",
     exhibitionImage: null,
   });
@@ -71,7 +72,8 @@ const ExhibitionForm = () => {
       id: null,
       exhibitionName: "",
       exhibitionDates: "",
-      artistName: "",
+       artistFirstName: "",
+     artistLastName: "",
       description: "",
       exhibitionImage: null,
     });
@@ -83,34 +85,40 @@ const ExhibitionForm = () => {
     <div className="exhibition-wrapper">
       <h2>{editing ? "Edit Exhibition" : "Add Exhibition"}</h2>
       <form className="exhibition-form" onSubmit={handleSubmit}>
-       <div className="wrap-in-line">
-         <div><label>Exhibition Name* : </label>
+        <div className="wrap-in-line"><div><label>Artist First Name * : </label>
+      <input
+        type="text"
+        name="artistFirstName"
+        value={formData.artistFirstName}
+        onChange={handleChange}
+        placeholder="Enter artist first name"
+      /></div>
+       <div><label>Artist Last Name *</label>
+      <input
+        type="text"
+        name="artistLastName"
+        value={formData.artistLastName}
+        onChange={handleChange}
+        placeholder="Enter artist last name"
+      /></div></div>
+      <label>Exhibition Name* : </label>
         <input
           type="text"
           name="exhibitionName"
           value={formData.exhibitionName}
           onChange={handleChange}
           placeholder="Enter exhibition name"
-        /></div>
-
-        <div><label>Exhibition Dates : </label>
+        /><label>Exhibition Dates : </label>
         <input
           type="text"
           name="exhibitionDates"
           value={formData.exhibitionDates}
           onChange={handleChange}
           placeholder="e.g. 1 Jan - 20 Jan 2025"
-        /></div>
-       </div>
-
-        <label>Artist Name *</label>
-        <input
-          type="text"
-          name="artistName"
-          value={formData.artistName}
-          onChange={handleChange}
-          placeholder="Enter artist name"
         />
+    
+
+          
 
         <label>Description</label>
         <textarea
@@ -118,6 +126,8 @@ const ExhibitionForm = () => {
           value={formData.description}
           onChange={handleChange}
           placeholder="Write exhibition description..."
+          rows="6" cols="50"
+        style={{resize: "none"}}
         ></textarea>
 
         <label>Exhibition Image</label>

@@ -23,7 +23,7 @@ function truncateWithMore(text, maxChars) {
 
   return (
     <div className='main-gallery-container artist-container'>
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",columnGap:"2rem"}}>
+        <div className='artist-container-grid' style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",columnGap:"2rem"}}>
             {AllArtForSale.map((artist)=>(
                 <div className='art-for-sale-card'>
                     <div className='left'>

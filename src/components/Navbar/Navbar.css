@@ -1224,6 +1224,7 @@ box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  text-align: left;
 }
 
 .password-form input {
@@ -1307,6 +1308,7 @@ box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  text-align: left;
 }
 
 .exhibition-form input,
@@ -1368,6 +1370,7 @@ box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  text-align: left;
 }
 
 .sale-form input {
@@ -1404,7 +1407,8 @@ box-sizing: border-box;
 
 
 .profile-form .wrap-in-line,
-.exhibition-form .wrap-in-line{
+.exhibition-form .wrap-in-line,
+.sale-form .wrap-in-line{
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1440,4 +1444,23 @@ box-sizing: border-box;
 .sort-box-filter-page ul li:hover{
   background-color: #363636;
   color: #ffffff;
+}
+
+.edit-profile-form-days {
+  cursor: pointer;
+  padding: 3px 7px;
+  border-radius:3px;
+  background: #f1f1f1;
+  color: #000;
+  transition: all 0.2s ease-in-out;
+}
+
+.edit-profile-form-days:hover {
+  background: #1150A3;
+  color: #ffffff;
+}
+
+.edit-profile-form-days.selected {
+  background: #1150A3;
+  color: #fff;
 }

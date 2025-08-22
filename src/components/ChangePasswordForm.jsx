@@ -45,7 +45,36 @@ const ChangePasswordForm = () => {
 
   return (
     <form className="password-form" onSubmit={handleSubmit}>
-      <h2>Change Password</h2>
+      <h2>Change User-ID and password page</h2>
+
+      <label>Old Username</label>
+      <input
+        type="password"
+        name="oldPassword"
+        value={formData.oldPassword}
+        onChange={handleChange}
+        placeholder="Enter old password"
+      />
+
+      <label>New Username</label>
+      <input
+        type="password"
+        name="newPassword"
+        value={formData.newPassword}
+        onChange={handleChange}
+        placeholder="Enter new password"
+      />
+
+      <label>Confirm New Username</label>
+      <input
+        type="password"
+        name="confirmPassword"
+        value={formData.confirmPassword}
+        onChange={handleChange}
+        placeholder="Confirm new password"
+      />
+
+      <button type="submit">Update Username</button>
 
       <label>Old Password</label>
       <input
@@ -78,6 +107,7 @@ const ChangePasswordForm = () => {
       {success && <p className="success-msg">{success}</p>}
 
       <button type="submit">Update Password</button>
+      
     </form>
   );
 };

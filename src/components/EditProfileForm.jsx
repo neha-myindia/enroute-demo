@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect,useRef } from "react";
 
 const EditProfileForm = () => {
   const [formData, setFormData] = useState({
@@ -52,6 +52,60 @@ const EditProfileForm = () => {
     setSuccess("Profile updated successfully!");
   };
 
+const [showDropdown, setShowDropdown] = useState(false);
+
+const daysMap = {
+  Mon: "Monday",
+  Tue: "Tuesday",
+  Wed: "Wednesday",
+  Thu: "Thursday",
+  Fri: "Friday",
+  Sat: "Saturday",
+  Sun: "Sunday",
+};
+
+const closedDaysRef = useRef(null);
+
+useEffect(() => {
+  const handleOutside = (e) => {
+    if (closedDaysRef.current && !closedDaysRef.current.contains(e.target)) {
+      setShowDropdown(false);
+    }
+  };
+  const handleEsc = (e) => {
+    if (e.key === "Escape") setShowDropdown(false);
+  };
+
+  document.addEventListener("pointerdown", handleOutside);
+  document.addEventListener("keydown", handleEsc);
+  return () => {
+    document.removeEventListener("pointerdown", handleOutside);
+    document.removeEventListener("keydown", handleEsc);
+  };
+}, []);
+
+const handleSelectDay = (dayKey) => {
+  const fullDay = daysMap[dayKey];
+  let updated = formData.closedDays
+    ? formData.closedDays.split(", ").map((d) => d.trim())
+    : [];
+
+  if (updated.includes(fullDay)) {
+    // remove if already selected
+    updated = updated.filter((d) => d !== fullDay);
+  } else {
+    // add new
+    updated.push(fullDay);
+  }
+
+  setFormData((prev) => ({
+    ...prev,
+    closedDays: updated.join(", "),
+  }));
+};
+
+
+
   return (
     <form className="profile-form" onSubmit={handleSubmit}>
       <h2>Edit Profile</h2>
@@ -64,6 +118,8 @@ const EditProfileForm = () => {
         onChange={handleChange}
         placeholder="Enter gallery name"
       />
+
+   
 
       <label>Address</label>
       <input
@@ -94,15 +150,6 @@ const EditProfileForm = () => {
       /></div>
       </div>
 
-      <label>Contact Number *</label>
-      <input
-        type="tel"
-        name="contactNumber"
-        value={formData.contactNumber}
-        onChange={handleChange}
-        placeholder="Enter contact number"
-      />
-
      <div className="wrap-in-line">
        <div><label>State : </label>
       <input
@@ -123,6 +170,26 @@ const EditProfileForm = () => {
       /></div>
      </div>
 
+        
+      <label>Phone Number *</label>
+      <input
+        type="tel"
+        name="contactNumber"
+        value={formData.contactNumber}
+        onChange={handleChange}
+        placeholder="Enter contact number"
+      />
+
+      
+      <label>Email *</label>
+      <input
+        type="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        placeholder="Enter email"
+      />
+
       <label>Website</label>
       <input
         type="url"
@@ -133,23 +200,71 @@ const EditProfileForm = () => {
       />
 
       <div className="wrap-in-line">
-        <div><label>Opening Hours : </label>
-      <input
-        type="text"
-        name="openingHours"
-        value={formData.openingHours}
-        onChange={handleChange}
-        placeholder="e.g. Mon-Fri 10am - 6pm"
-      />
+        <div className="wrap-in-line">
+  <label>Opening Hours : </label>
+  <div style={{ display: "flex", gap: "10px" ,alignItems:"center"}}>
+    <input
+      type="time"
+      name="openFrom"
+      value={formData.openFrom}
+      onChange={handleChange}
+    />
+    <span>to</span>
+    <input
+      type="time"
+      name="openUntil"
+      value={formData.openUntil}
+      onChange={handleChange}
+    />
+  </div>
 </div>
-      <div><label>Closed Days : </label>
-      <input
-        type="text"
-        name="closedDays"
-        value={formData.closedDays}
-        onChange={handleChange}
-        placeholder="e.g. Sunday, Public Holidays"
-      /></div>
+
+    
+<div ref={closedDaysRef} className="wrap-in-line">
+  <label>Closed Days : </label>
+  <div style={{ position: "relative" }}>
+    <input
+      type="text"
+      name="closedDays"
+      value={formData.closedDays}
+      readOnly
+      placeholder="e.g. Sunday"
+      onClick={() => setShowDropdown((prev) => !prev)}
+    />
+
+    {showDropdown && (
+      <div className="edit-profile-days-dropdown" 
+        style={{
+          position: "absolute",
+          top: "100%",
+          left: 0,
+          background: "#fff",
+          border: "1px solid #ccc",
+          padding: "8px",
+          display: "flex",
+          gap: "8px",
+          zIndex: 100,
+          flexWrap: "wrap",
+        }}
+      >
+        {Object.keys(daysMap).map((dayKey) => (
+          <span
+            key={dayKey}
+            onClick={() => handleSelectDay(dayKey)}
+            className={`edit-profile-form-days ${
+    formData.closedDays?.includes(daysMap[dayKey]) ? "selected" : ""
+  }`}
+          >
+            {dayKey}
+          </span>
+        ))}
+      </div>
+    )}
+  </div>
+</div>
+
+
+
       </div>
 
       <label>Gallery Overview</label>
@@ -158,6 +273,8 @@ const EditProfileForm = () => {
         value={formData.galleryOverview}
         onChange={handleChange}
         placeholder="Write a brief overview..."
+        rows="6"  class="textarea-custom"
+        style={{resize: "none",width: "auto"}}
       ></textarea>
 
       <label>Gallery Image</label>
@@ -198,7 +315,33 @@ const EditProfileForm = () => {
       />
       </div>
 
+      
+
     </div>
+    <div className="wrap-in-line">
+       <div>
+  <label>Paid Until : </label>
+  <input
+    type="text"
+    name="state"
+    value={formData.state}
+    disabled   // ✅ makes it non-editable but still submittable
+    placeholder="Date"
+  />
+</div>
+
+<div>
+  <label>Gallery status : </label>
+  <input
+    type="text"
+    name="postcode"
+    value={formData.postcode}
+    disabled   // or use disabled if you want it greyed out
+    placeholder="Active"
+  />
+</div>
+
+     </div>
       {error && <p className="error-msg">{error}</p>}
       {success && <p className="success-msg">{success}</p>}
 

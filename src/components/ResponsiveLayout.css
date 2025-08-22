@@ -140,6 +140,40 @@
 .popup-content {
   width: 80%;
 }
+.profile-form .wrap-in-line, .exhibition-form .wrap-in-line, .sale-form .wrap-in-line {
+   flex-direction: column !important;
+   align-items: flex-start !important;
+}
+.tab-buttons {
+    flex-direction: column;
+    margin: 0 2rem;
+}
+.profile-form {
+    align-items: flex-start;
+}
+.textarea-custom {
+    width: 40ch !important; 
+  }
+  .artists-filter-search-wrapper {
+    
+    flex-direction: column !important;
+    
+}
+.artist-container-grid{
+    grid-template-columns: 1fr !important;
+}
+.art-for-sale-card {
+    width: 90vmin !important;
+}
+.artist-card {
+   flex-direction: column;
+}
+.artist-container .artist-card .left {
+    width: 100% !important;
+   
+}
+.artist-container .artist-card .gallery-item-overview-wrapper {
+    width: 100% !important;
 }
 
 
