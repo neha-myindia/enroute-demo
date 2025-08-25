@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom';
 const defaultIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet/dist/images/marker-icon.png",
   iconSize: [25, 41],
-  iconAnchor: [17, 55],      
+      
   popupAnchor: [1, -40], 
 });
 
@@ -21,7 +21,7 @@ const highlightedIcon = L.icon({
   iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
    iconSize: [35, 55],       
-  iconAnchor: [17, 55],      
+        
   popupAnchor: [1, -40],     
   shadowSize: [41, 41]
 });
@@ -66,7 +66,7 @@ const [selectedFromURL, setSelectedFromURL] = useState(null);
   }, []);
 
   const fetchGalleries = (area = "") => {
-    let url = `${baseUrl}/api/galleries/map/`;
+    let url = `${baseUrl}/galleries/map/`;
     if (area) {
       url += `?area=${encodeURIComponent(area)}`;
     }
@@ -84,7 +84,7 @@ const [selectedFromURL, setSelectedFromURL] = useState(null);
 
  useEffect(() => {
   if (id) {
-    axios.get(`${baseUrl}/api/galleries/map/?id=${id}`)
+    axios.get(`${baseUrl}/galleries/map/?id=${id}`)
       .then(res => {
         setSelectedGallery(res.data[0]);
         setSelectedFromURL(res.data[0]); 

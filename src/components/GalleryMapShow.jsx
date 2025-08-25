@@ -66,7 +66,7 @@ const [selectedFromURL, setSelectedFromURL] = useState(null);
   }, []);
 
   const fetchGalleries = (area = "") => {
-    let url = `${baseUrl}/api/galleries/map/`;
+    let url = `${baseUrl}/galleries/map/`;
     if (area) {
       url += `?area=${encodeURIComponent(area)}`;
     }
@@ -84,7 +84,7 @@ const [selectedFromURL, setSelectedFromURL] = useState(null);
 
  useEffect(() => {
   if (id) {
-    axios.get(`${baseUrl}/api/galleries/map/?id=${id}`)
+    axios.get(`${baseUrl}/galleries/map/?id=${id}`)
       .then(res => {
         setSelectedGallery(res.data[0]);
         setSelectedFromURL(res.data[0]); 
