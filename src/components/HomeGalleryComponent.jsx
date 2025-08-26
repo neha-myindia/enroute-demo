@@ -310,8 +310,8 @@ function truncateWithMore(text, maxChars) {
 
               <div className='left-fourth-row'>
                 <div className='social-icons'>
-                  <a href={component.instagram}><TiSocialInstagram /></a>
-                  <a href={component.facebook}><FaFacebookSquare /></a>
+                  <a href={component.instagram} target='_blank'><TiSocialInstagram /></a>
+                  <a href={component.facebook} target='_blank'><FaFacebookSquare /></a>
                 </div>
                 <div className='planner-icons'>
                   <a href="#" className='add-to-planner-btn'>Add to Personal Planner</a>

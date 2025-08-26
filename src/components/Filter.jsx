@@ -15,6 +15,7 @@ const Filter = ({ onSearch, resetTrigger }) => {
   const [nameSuggestions, setNameSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const[areas,setAreas]=useState([])
+  const [loading, setLoading] = useState(false);
 
   const [selectedAreas, setSelectedAreas] = useState([]);
   const [showAreaOptions, setShowAreaOptions] = useState(false);
@@ -119,6 +120,7 @@ const Filter = ({ onSearch, resetTrigger }) => {
 
 
  const handleSubmit = () => {
+   setLoading(true);
   const filters = {
     name,
     areas: selectedAreas.includes("all") ? ["all"] : selectedAreas,
@@ -127,7 +129,14 @@ const Filter = ({ onSearch, resetTrigger }) => {
     dateRangeStart,
     dateRangeEnd
   };
-  onSearch(filters);
+onSearch(filters);
+
+  // Small delay to simulate loading effect if needed
+  // You can remove this if search is instant
+  setTimeout(() => {
+    setLoading(false); // hide loader
+  }, 500); // 0.5s
+
 };
 
 
@@ -312,7 +321,13 @@ const Filter = ({ onSearch, resetTrigger }) => {
         </div>
 
         <div className='search-btn-wrapper'>
-          <button onClick={handleSubmit}>Search</button>
+           <button onClick={handleSubmit} disabled={loading}>
+    {loading ? (
+      <div className='loader-btn-wrapper'><span className="loader"></span></div>
+    ) : (
+      "Search"
+    )}
+  </button>
         </div>
       </div>
     </div>

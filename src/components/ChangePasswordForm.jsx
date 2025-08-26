@@ -146,31 +146,31 @@ const ChangePasswordForm = () => {
       <form className="password-form" onSubmit={handleUsernameSubmit}>
         <h2>Change User-ID and Password Page</h2>
 
-        <label>Old Username</label>
+        <label>Old User-id</label>
         <input
           type="text"
           name="oldUsername"
           value={formData.oldUsername}
           onChange={handleChange}
-          placeholder="Enter old Username"
+          placeholder="Enter old Userid"
         />
 
-        <label>New Username</label>
+        <label>New User-id</label>
         <input
           type="text"
           name="newUsername"
           value={formData.newUsername}
           onChange={handleChange}
-          placeholder="Enter new Username"
+          placeholder="Enter new Userid"
         />
 
-        <label>Confirm New Username</label>
+        <label>Confirm New User-id</label>
         <input
           type="text"
           name="confirmUsername"
           value={formData.confirmUsername}
           onChange={handleChange}
-          placeholder="Confirm new Username"
+          placeholder="Confirm new Userid"
         />
 
         <button type="submit">Update Username</button>

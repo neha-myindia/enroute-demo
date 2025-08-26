@@ -57,6 +57,7 @@ const GalleryItemDetails = () => {
                 <div className={gallery.status === 'open' ? 'status-open' : 'status-closed'}>
                   {gallery.status}
                 </div>
+                <p>{gallery.overview}</p>
               </div>
             </div>
           </div>
@@ -91,8 +92,8 @@ const GalleryItemDetails = () => {
                       <a href={`/show-on-map/${gallery.id}`}>Show on Map</a>
                     </div>
                     <div className='social-icons'>
-                      <a href={gallery.instagram}><TiSocialInstagram /></a>
-                      <a href={gallery.facebook}><FaFacebookSquare /></a>
+                      <a href={gallery.instagram} target='_blank'><TiSocialInstagram /></a>
+                      <a href={gallery.facebook} target='_blank'><FaFacebookSquare /></a>
                     </div>
                   </div>
           </div>

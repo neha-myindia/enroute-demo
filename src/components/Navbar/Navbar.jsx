@@ -109,17 +109,68 @@ setShowLogin(false);
             </div>
             <div className='right-comp'>
                 <a href="#">
-                   {loggedIn ? (
-  <button onClick={handleLogout}>
-    Logout
-  </button>
-) : (
-  <button onClick={() => setShowLogin(true)}>
-    Gallery sign in
-  </button>
-)}
+                {loggedIn ? (
+    <div className="user-menu">
+      <button className="user-btn">
+        Hi {credentials.external_user_id || "User"}
+      </button>
+      <div className="dropdown">
+        <button onClick={() => navigate("/login-page")}>Edit</button>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+    </div>
+  ) : (
+    <button onClick={() => setShowLogin(true)}>
+      Gallery sign in
+    </button>
+  )}
                 </a>
             </div>
+            <style>
+{`
+  .user-menu {
+    position: relative;
+    display: inline-block;
+  }
+
+  .user-btn {
+    background: #363636;
+    color: #fff;
+    padding: 9px 14px;
+    cursor: pointer;
+  }
+
+  .dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #fff;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+    border-radius: 6px;
+    min-width: 120px;
+    z-index: 1000;
+  }
+
+  .dropdown button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: white;
+    color:#666;
+    cursor: pointer;
+    text-align: left;
+  }
+
+  .dropdown button:hover {
+    background: #f0f0f0;
+  }
+
+  .user-menu:hover .dropdown {
+    display: block;
+  }
+`}
+</style>
             </div>
         </div>
           {showLogin && (
