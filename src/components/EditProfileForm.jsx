@@ -1,33 +1,72 @@
 import React, { useState,useEffect,useRef } from "react";
 
 const EditProfileForm = () => {
+  const baseUrl = import.meta.env.VITE_API_URL;
   const [formData, setFormData] = useState({
-    galleryName: "",
-    galleryArea: "",
+    name: "",
+    area: "",
     address: "",
-    contactNumber: "",
+    contact_number: "",
     suburb: "",
     state: "",
     postcode: "",
     website: "",
-    openingHours: "",
-    closedDays: "",
-    galleryOverview: "",
-    galleryImage: null,
+    opening_hours_full: "",
+    days_closed: "",
+    overview: "",
+    images: null,
     instagram: "",
     facebook: "",
+    email: "",
+    status: "",
+    paid_until:null
   });
 
   const [previewImage, setPreviewImage] = useState(null);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
 
+  
+  useEffect(() => {
+  const fetchGallery = async () => {
+    try {
+     
+      const token = localStorage.getItem("authToken");
+console.log("Token in localStorage:", token);
+
+      const res = await fetch(`${baseUrl}/my-gallery/`, {
+        method: "GET",
+        headers: {
+  "Authorization": `Token ${token}`,
+},
+      });
+
+      if (!res.ok) throw new Error("Failed to load gallery data");
+      const data = await res.json();
+
+      setFormData({
+        ...data,
+        images: null,
+      });
+
+      if (data.images) {
+        setPreviewImage(data.images);
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  fetchGallery();
+}, []);
+
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
-    if (name === "galleryImage") {
+    if (name === "images") {
       const file = files[0];
-      setFormData((prev) => ({ ...prev, galleryImage: file }));
+      setFormData((prev) => ({ ...prev, images: file }));
       setPreviewImage(file ? URL.createObjectURL(file) : null);
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
@@ -37,20 +76,35 @@ const EditProfileForm = () => {
     setSuccess("");
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    // Validation example (add more as needed)
-    if (!formData.galleryName || !formData.contactNumber) {
-      setError("Gallery name and contact number are required.");
-      return;
-    }
+  try {
+    const formDataToSend = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== null && formData[key] !== "") {
+        formDataToSend.append(key, formData[key]);
+      }
+    });
 
-    // 🔐 Here you’d call your API with `formData`
-    // Example: await api.post("/update-profile", formData);
+    const token = localStorage.getItem("authToken"); // get token
+
+    const res = await fetch(`${baseUrl}/my-gallery/`, {
+      method: "PATCH",
+     headers: {
+  "Authorization": `Token ${token}`,
+},
+      body: formDataToSend,
+    });
+
+    if (!res.ok) throw new Error("Failed to update gallery");
 
     setSuccess("Profile updated successfully!");
-  };
+  } catch (err) {
+    setError(err.message);
+  }
+};
+
 
 const [showDropdown, setShowDropdown] = useState(false);
 
@@ -86,21 +140,21 @@ useEffect(() => {
 
 const handleSelectDay = (dayKey) => {
   const fullDay = daysMap[dayKey];
-  let updated = formData.closedDays
-    ? formData.closedDays.split(", ").map((d) => d.trim())
+  let updated = formData.days_closed
+    ? formData.days_closed.split(", ").map((d) => d.trim())
     : [];
 
   if (updated.includes(fullDay)) {
-    // remove if already selected
+   
     updated = updated.filter((d) => d !== fullDay);
   } else {
-    // add new
+    
     updated.push(fullDay);
   }
 
   setFormData((prev) => ({
     ...prev,
-    closedDays: updated.join(", "),
+    days_closed: updated.join(", "),
   }));
 };
 
@@ -113,8 +167,8 @@ const handleSelectDay = (dayKey) => {
       <label>Gallery Name *</label>
       <input
         type="text"
-        name="galleryName"
-        value={formData.galleryName}
+        name="name"
+        value={formData.name}
         onChange={handleChange}
         placeholder="Enter gallery name"
       />
@@ -143,8 +197,8 @@ const handleSelectDay = (dayKey) => {
       <div><label>Area : </label>
       <input
         type="text"
-        name="galleryArea"
-        value={formData.galleryArea}
+        name="area"
+        value={formData.area}
         onChange={handleChange}
         placeholder="Enter gallery area"
       /></div>
@@ -174,8 +228,8 @@ const handleSelectDay = (dayKey) => {
       <label>Phone Number *</label>
       <input
         type="tel"
-        name="contactNumber"
-        value={formData.contactNumber}
+        name="contact_number"
+        value={formData.contact_number}
         onChange={handleChange}
         placeholder="Enter contact number"
       />
@@ -192,7 +246,7 @@ const handleSelectDay = (dayKey) => {
 
       <label>Website</label>
       <input
-        type="url"
+        type="text"
         name="website"
         value={formData.website}
         onChange={handleChange}
@@ -225,8 +279,8 @@ const handleSelectDay = (dayKey) => {
   <div style={{ position: "relative" }}>
     <input
       type="text"
-      name="closedDays"
-      value={formData.closedDays}
+      name="days_closed"
+      value={formData.days_closed}
       readOnly
       placeholder="e.g. Sunday"
       onClick={() => setShowDropdown((prev) => !prev)}
@@ -252,7 +306,7 @@ const handleSelectDay = (dayKey) => {
             key={dayKey}
             onClick={() => handleSelectDay(dayKey)}
             className={`edit-profile-form-days ${
-    formData.closedDays?.includes(daysMap[dayKey]) ? "selected" : ""
+    formData.days_closed?.includes(daysMap[dayKey]) ? "selected" : ""
   }`}
           >
             {dayKey}
@@ -269,8 +323,8 @@ const handleSelectDay = (dayKey) => {
 
       <label>Gallery Overview</label>
       <textarea
-        name="galleryOverview"
-        value={formData.galleryOverview}
+        name="overview"
+        value={formData.overview}
         onChange={handleChange}
         placeholder="Write a brief overview..."
         rows="6"  class="textarea-custom"
@@ -280,7 +334,7 @@ const handleSelectDay = (dayKey) => {
       <label>Gallery Image</label>
       <input
         type="file"
-        name="galleryImage"
+        name="images"
         accept="image/*"
         onChange={handleChange}
       />
@@ -323,10 +377,10 @@ const handleSelectDay = (dayKey) => {
   <label>Paid Until : </label>
   <input
     type="text"
-    name="state"
-    value={formData.state}
-    disabled   // ✅ makes it non-editable but still submittable
-    placeholder="Date"
+    name="paid_until"
+    value={formData.paid_until}
+    disabled   
+    placeholder="null"
   />
 </div>
 
@@ -334,9 +388,9 @@ const handleSelectDay = (dayKey) => {
   <label>Gallery status : </label>
   <input
     type="text"
-    name="postcode"
-    value={formData.postcode}
-    disabled   // or use disabled if you want it greyed out
+    name="status"
+    value={formData.status}
+    disabled   
     placeholder="Active"
   />
 </div>

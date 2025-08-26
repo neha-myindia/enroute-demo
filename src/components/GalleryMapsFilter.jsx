@@ -12,24 +12,24 @@ const GalleryMapsFilter = ({ onSearch }) => {
   const [name, setName] = useState('');
   const [nameSuggestions, setNameSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-//   const[areas,setAreas]=useState([])
+const[areas,setAreas]=useState([])
 
   const [selectedAreas, setSelectedAreas] = useState([]);
 
 
-//    useEffect(() => {
-//       const fetchGalleryItems = async () => {
-//         try {
-//           const response = await fetch(`${baseUrl}/galleries/areas/`);
-//           const data = await response.json();
-//           setAreas(data.areas);
-//         } catch (error) {
-//           console.error("Error fetching gallery items:", error);
-//         }
-//       };
+   useEffect(() => {
+      const fetchGalleryItems = async () => {
+        try {
+          const response = await fetch(`${baseUrl}/galleries/areas/`);
+          const data = await response.json();
+          setAreas(data.areas);
+        } catch (error) {
+          console.error("Error fetching gallery items:", error);
+        }
+      };
   
-//       fetchGalleryItems();
-//     }, []);
+      fetchGalleryItems();
+    }, []);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -88,10 +88,10 @@ const GalleryMapsFilter = ({ onSearch }) => {
           <div>filter by</div>
           <div className='icon'><HiAdjustments /></div>
         </div>
-        <div className='filter-right-menu'>
+        {/* <div className='filter-right-menu'>
           <div className='icon'><MdViewModule /></div>
           <div className='sort-by-btn'>sort by<IoIosArrowDown /></div>
-        </div>
+        </div> */}
       </div>
 
       <div className='bottom-menu-wrapper' style={{justifyContent:"flex-start",flexDirection:"column",alignItems:"flex-start"}}>
@@ -146,9 +146,9 @@ const GalleryMapsFilter = ({ onSearch }) => {
             <div style={{ position: 'relative', zIndex: 10 }}>
           <label>Search by area</label>
           <div className='gallery-maps-areas-grid' style={{display:"flex",flexDirection:"row",flexWrap:"wrap"}}>
-            {areas.map((item)=>(
-            <button key={item.id} >{item.area}</button>
-          ))}
+           {areas.map((item, index) => (
+    <button key={index}>{item}</button>
+  ))}
           </div>
         </div>
         </div>

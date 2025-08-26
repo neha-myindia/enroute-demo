@@ -8,7 +8,7 @@ import '../components/ResponsiveLayout.css';
 
 const dates = ["Today", "Specific Date", "Date Range"];
 
-const Filter = ({ onSearch }) => {
+const Filter = ({ onSearch, resetTrigger }) => {
   const baseUrl = import.meta.env.VITE_API_URL;
   const [allGalleryNames, setAllGalleryNames] = useState([]);
   const [name, setName] = useState('');
@@ -29,6 +29,14 @@ const Filter = ({ onSearch }) => {
   const [dateRangeEnd, setDateRangeEnd] = useState('');
 
   const [sortboxopen,setSortboxopen]=useState(false);
+   useEffect(() => {
+    setName("");
+    setSelectedAreas([]);
+    setSelectedDates("Today");
+    setSpecificDate("");
+    setDateRangeStart("");
+    setDateRangeEnd("");
+  }, [resetTrigger]);
 
   useEffect(() => {
   const fetchGalleryNames = async () => {

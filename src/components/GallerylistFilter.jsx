@@ -5,10 +5,10 @@ import '../components/ResponsiveLayout.css';
 import { GallerylistAlphabets } from '../constants/items';
 import { useNavigate } from 'react-router-dom';
 
-const areas = [
-  "All","Alexandria/Zetland", "Chippendale/Darlington",  "City/CBD", "Darlinghurst/Woolloomooloo", "North Shore/Manly", "Paddington/Woollahra","Potts Point/Rushcutters Bay", "Redfern/Waterloo", "Surry Hills"
-  ,  , "Testing Purpose"
-];
+// const areas = [
+//   "All","Alexandria/Zetland", "Chippendale/Darlington",  "City/CBD", "Darlinghurst/Woolloomooloo", "North Shore/Manly", "Paddington/Woollahra","Potts Point/Rushcutters Bay", "Redfern/Waterloo", "Surry Hills"
+//   ,  , "Testing Purpose"
+// ];
 
 const GallerylistFilter = () => {
   const baseUrl = import.meta.env.VITE_API_URL;
@@ -19,8 +19,24 @@ const GallerylistFilter = () => {
   const [selectedAlphabet, setSelectedAlphabet] = useState('');
   const [allGalleryItems, setAllGalleryItems] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const[areas,setAreas]=useState([])
+  
 
   const navigate = useNavigate();
+
+   useEffect(() => {
+        const fetchGalleryItems = async () => {
+          try {
+            const response = await fetch(`${baseUrl}/galleries/areas/`);
+            const data = await response.json();
+            setAreas(data.areas);
+          } catch (error) {
+            console.error("Error fetching gallery items:", error);
+          }
+        };
+    
+        fetchGalleryItems();
+      }, []);
 
   useEffect(() => {
     const fetchGalleryItems = async () => {

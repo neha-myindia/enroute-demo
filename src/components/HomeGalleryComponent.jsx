@@ -7,6 +7,9 @@ import { GalleryItems } from '../constants/items';
 import { useNavigate } from 'react-router-dom';
 import { FaLessThan } from "react-icons/fa6";
 import { FaGreaterThan } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+
+const slugify = (text) => text.toLowerCase().replace(/\s+/g, "-");
 
 const ImageSlider = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -130,6 +133,7 @@ const HomeGalleryComponent = () => {
   const [filteredData, setFilteredData] = useState([]);
   const [selectedExhibitionItem, setSelectedExhibitionItem] = useState(null);
   const navigate=useNavigate();
+  const [resetCounter, setResetCounter] = useState(0);
 
   const [currentPage, setCurrentPage] = useState(1);
 const itemsPerPage = 10;
@@ -238,11 +242,29 @@ function truncateWithMore(text, maxChars) {
   return text.slice(0, maxChars).trim() + '...';
 }
 
-
+ const handleReset = () => {
+    setFilteredData(allGalleryItems); 
+    setCurrentPage(1); 
+    setResetCounter(prev => prev + 1);
+  };
   return (
     <div>
-      <Filter onSearch={handleSearch} />
-
+      <Filter onSearch={handleSearch} resetTrigger={resetCounter}/>
+ <div style={{ textAlign: "center", margin: "10px 0" }}>
+        <button 
+          onClick={handleReset} 
+          style={{
+            padding: "8px 16px",
+            background: "#ccc",
+            border: "none",
+            borderRadius: "6px",
+            cursor: "pointer",
+            fontWeight: "600"
+          }}
+        >
+          Reset
+        </button>
+      </div>
       <div ref={galleryTopRef} className='main-gallery-container'>
         {currentItems.map((component) => (
           <div key={component.id} className={`main-comp-wrapper ${!component.exhibitions || component.exhibitions.length === 0 ? 'main-comp-wrapper-no-exhibition' : ''}`}>
@@ -283,7 +305,7 @@ function truncateWithMore(text, maxChars) {
               </div>
 
               <div className='left-more-btn'>
-                <div onClick={()=>handleMoreClick(gallery)}>+ More</div>
+                 <Link to={`/${component.slug || slugify(component.name)}`}>+ More</Link>
               </div>
 
               <div className='left-fourth-row'>

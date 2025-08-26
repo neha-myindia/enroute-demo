@@ -5,9 +5,9 @@ import Introduction from '../components/Introduction'
 
 const Home = () => {
 
-useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+// useEffect(() => {
+//     window.scrollTo(0, 0);
+//   }, []);
 
   return (
     <main className=''>

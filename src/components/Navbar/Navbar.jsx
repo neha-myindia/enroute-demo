@@ -22,6 +22,9 @@ const handleChange = (e) => {
     [e.target.name]: e.target.value
   });
 };
+const [loggedIn, setLoggedIn] = useState(
+  !!localStorage.getItem("authToken") // check if already logged in
+);
 
     const [activeIndex, setActiveIndex] = useState(null);
     const [showLogin, setShowLogin] = useState(false);
@@ -41,6 +44,12 @@ const handleChange = (e) => {
     }
   }, [showLogin]);
   const baseUrl = import.meta.env.VITE_API_URL;
+
+  const handleLogout = () => {
+  localStorage.removeItem("authToken");
+  setLoggedIn(false);   // ✅ Reset login state
+  navigate("/");        // Redirect to home (or wherever you want)
+};
 
   const handleSubmit = async (e) => {
   e.preventDefault();
@@ -63,6 +72,9 @@ const handleChange = (e) => {
 
     // Example: Save token in localStorage
     localStorage.setItem("authToken", data.token);
+   
+setLoggedIn(true);        // ✅ Mark user as logged in
+setShowLogin(false); 
 
     // Redirect to dashboard or gallery page
     navigate("/login-page");
@@ -97,9 +109,15 @@ const handleChange = (e) => {
             </div>
             <div className='right-comp'>
                 <a href="#">
-                   <button onClick={() => setShowLogin(true)}>
-                    Gallery sign in
-                </button>
+                   {loggedIn ? (
+  <button onClick={handleLogout}>
+    Logout
+  </button>
+) : (
+  <button onClick={() => setShowLogin(true)}>
+    Gallery sign in
+  </button>
+)}
                 </a>
             </div>
             </div>
@@ -189,7 +207,11 @@ const handleChange = (e) => {
                     </ul>
                     <div className="menu-buttons">
                         <a href="#" className="about-btn">About the site</a>
-                        <a href="#" className="signin-btn">Gallery sign in</a>
+                        {loggedIn ? (
+  <button onClick={handleLogout} className="signin-btn">Logout</button>
+) : (
+  <button onClick={() => setShowLogin(true)} className="signin-btn">Gallery sign in</button>
+)}
                     </div>
                 </div>
             )}
