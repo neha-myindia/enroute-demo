@@ -334,6 +334,7 @@ const handleSelectDay = (dayKey) => {
         placeholder="Write a brief overview..."
         rows="6"  class="textarea-custom"
         style={{resize: "none",width: "auto"}}
+        maxLength={1000}
       ></textarea>
 
       <label>Gallery Image</label>

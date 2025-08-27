@@ -128,6 +128,7 @@ const ExhibitionForm = () => {
           placeholder="Write exhibition description..."
           rows="6" cols="50"
         style={{resize: "none"}}
+        maxLength={1000}
         ></textarea>
 
         <label>Exhibition Image</label>
