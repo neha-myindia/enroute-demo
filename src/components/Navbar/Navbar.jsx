@@ -178,7 +178,7 @@ setShowLogin(false);
          
           <div className="modal-content">
             <div className='image-wrapper'>
-                <img src="loginpop-image.jpg" alt="" style={{width:"100%"}}/>
+                <img src="../loginpop-image.jpg" alt="" style={{width:"100%"}}/>
             </div>
             <div className='modal-form-wrapper'>
                 <button type="button" onClick={() => setShowLogin(false)} className='close-btn'>

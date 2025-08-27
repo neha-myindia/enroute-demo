@@ -182,6 +182,7 @@ const handleSelectDay = (dayKey) => {
         value={formData.address}
         onChange={handleChange}
         placeholder="Enter address"
+        disabled
       />
 
       <div className="wrap-in-line">
@@ -192,6 +193,7 @@ const handleSelectDay = (dayKey) => {
         value={formData.suburb}
         onChange={handleChange}
         placeholder="Enter suburb"
+        disabled
       /></div>
 
       <div><label>Area : </label>
@@ -201,6 +203,7 @@ const handleSelectDay = (dayKey) => {
         value={formData.area}
         onChange={handleChange}
         placeholder="Enter gallery area"
+        disabled
       /></div>
       </div>
 
@@ -212,6 +215,7 @@ const handleSelectDay = (dayKey) => {
         value={formData.state}
         onChange={handleChange}
         placeholder="Enter state"
+        disabled
       /></div>
 
       <div><label>Postcode : </label>
@@ -221,6 +225,7 @@ const handleSelectDay = (dayKey) => {
         value={formData.postcode}
         onChange={handleChange}
         placeholder="Enter postcode"
+        disabled
       /></div>
      </div>
 
@@ -346,32 +351,31 @@ const handleSelectDay = (dayKey) => {
         />
       )}
 
-    <div className="wrap-in-line social-links">
-       <div>
+
+      
        <label>Instagram : </label>
       <input
-        type="url"
+        type="text"
         name="instagram"
         value={formData.instagram}
         onChange={handleChange}
         placeholder="https://instagram.com/yourprofile"
       />
-     </div>
+     
 
-      <div>
+     
         <label>Facebook : </label>
       <input
-        type="url"
+        type="text"
         name="facebook"
         value={formData.facebook}
         onChange={handleChange}
         placeholder="https://facebook.com/yourpage"
       />
-      </div>
-
+   
       
 
-    </div>
+  
     <div className="wrap-in-line">
        <div>
   <label>Paid Until : </label>

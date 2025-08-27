@@ -55,8 +55,9 @@ const EditPage = () => {
         <button
           className={activeTab === "password" ? "active" : ""}
           onClick={() => setActiveTab("password")}
+          style={{padding: "8px"}}
         >
-          Change Password
+          Change User ID / Password
         </button>
       </div>
 

@@ -49,12 +49,12 @@ const ChangePasswordForm = () => {
     }
 
     if (formData.newUsername.length < 6) {
-      setError("New username must be at least 6 characters long.");
+      setError("New userid must be at least 6 characters long.");
       return;
     }
 
     if (formData.newUsername !== formData.confirmUsername) {
-      setError("New username and confirmation do not match.");
+      setError("New userid and confirmation do not match.");
       return;
     }
 
@@ -75,10 +75,10 @@ const ChangePasswordForm = () => {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to update Username.");
+        throw new Error(data.message || "Failed to update User-id.");
       }
 
-      setSuccess("Username changed successfully!");
+      setSuccess("User-id changed successfully!");
       setFormData((prev) => ({
         ...prev,
         oldUsername: "",
@@ -173,7 +173,7 @@ const ChangePasswordForm = () => {
           placeholder="Confirm new Userid"
         />
 
-        <button type="submit">Update Username</button>
+        <button type="submit">Update User-id</button>
       </form>
 
       <form className="password-form" onSubmit={handlePasswordSubmit}>
