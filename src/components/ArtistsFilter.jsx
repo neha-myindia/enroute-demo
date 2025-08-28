@@ -106,7 +106,7 @@ const Filter = ({ onSearch }) => {
           <div className='icon'><HiAdjustments /></div>
         </div>
         <div className='filter-right-menu'>
-          <div className='icon'><MdViewModule /></div>
+          <div className='icon'></div>
           <div className='sort-by-btn'>sort by<IoIosArrowDown /></div>
         </div>
       </div>

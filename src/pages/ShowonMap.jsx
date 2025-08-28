@@ -30,7 +30,7 @@ const createLabelIcon = (name) => {
   return L.divIcon({
     className: "custom-marker", 
     html: `
-      <div style="display:flex; flex-direction:column; align-items:center;">
+      <div style="display:flex; flex-direction:row; align-items:center;">
         <img src="https://unpkg.com/leaflet/dist/images/marker-icon.png" 
              style="width:25px; height:41px;" />
         <span style="margin-top:2px; font-size:12px; color:#ffffff; padding:2px 10px; background-color:#363636; font-weight:500; white-space:nowrap;">

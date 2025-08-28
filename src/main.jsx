@@ -49,11 +49,14 @@ const router=createBrowserRouter([
 {
   path: 'show-on-map',
   element: <ShowonMap />
-},
-    {
-      path:'gallery-list-item-details',
-      element:<GalleryItemDetails/>
-    },
+},{
+  path: ':slug',
+  element: <GalleryItemDetails/>
+}
+    // {
+    //   path:'gallery-list-item-details',
+    //   element:<GalleryItemDetails/>
+    // },
     ]
   }
 ])

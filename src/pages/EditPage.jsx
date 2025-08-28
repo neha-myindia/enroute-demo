@@ -50,7 +50,7 @@ const EditPage = () => {
           className={activeTab === "sale" ? "active" : ""}
           onClick={() => setActiveTab("sale")}
         >
-          Put For Sale
+          Add / Modify Art For Sale
         </button>
         <button
           className={activeTab === "password" ? "active" : ""}

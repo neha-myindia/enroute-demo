@@ -1,4 +1,17 @@
 import React, { useState,useEffect,useRef } from "react";
+import { TiSocialInstagram } from "react-icons/ti";
+import { FaFacebookSquare } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
+const slugify = (text) => {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')   // remove special characters
+    .replace(/\s+/g, '-')           // spaces → dash
+    .replace(/-+/g, '-')            // collapse multiple dashes
+    .replace(/^-+|-+$/g, '');       // trim leading/trailing dashes
+};
 
 const EditProfileForm = () => {
   const baseUrl = import.meta.env.VITE_API_URL;
@@ -25,7 +38,7 @@ const EditProfileForm = () => {
   const [previewImage, setPreviewImage] = useState(null);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-
+  const [showPreview, setShowPreview] = useState(false);
   
   useEffect(() => {
   const fetchGallery = async () => {
@@ -87,7 +100,7 @@ const handleSubmit = async (e) => {
       }
     });
 
-    const token = localStorage.getItem("authToken"); // get token
+    const token = localStorage.getItem("authToken"); 
 
     const res = await fetch(`${baseUrl}/my-gallery/`, {
       method: "PATCH",
@@ -158,10 +171,15 @@ const handleSelectDay = (dayKey) => {
   }));
 };
 
+const navigate = useNavigate();
 
+  const handleShowListing = () => {
+    const slug = slugify(formData.name);
+    navigate(`/${slug}`, { state: { id: formData.id } });
+  };
 
   return (
-    <form className="profile-form" onSubmit={handleSubmit}>
+    <form className="profile-form">
       <h2>Edit Profile</h2>
 
       <label>Gallery Name *</label>
@@ -404,8 +422,85 @@ const handleSelectDay = (dayKey) => {
       {error && <p className="error-msg">{error}</p>}
       {success && <p className="success-msg">{success}</p>}
 
-      <button type="submit">Save Changes</button>
+      <div style={{display:"flex", alignItems:"center", justifyContent:"space-between"}}>
+        <div className="preview-btn" 
+        onClick={() => setShowPreview(true)}>Preview</div>
+        <button onClick={handleSubmit}>Save Changes</button>
+        <div className="show-gallery-listing-btn"
+        onClick={handleShowListing}>Show gallery listing</div>
+      </div>
+        {showPreview && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            background: "rgba(0,0,0,0.6)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+        >
+          <div
+            style={{
+              background: "#fff",
+              padding: "20px",
+              borderRadius: "10px",
+              maxWidth: "600px",
+              width: "100%",
+              maxHeight: "80vh",
+              overflowY: "auto",
+            }}
+          >
+            
+
+            <div className='left-side' style={{width:"100%"}}>
+            <div className='left-second-row'>
+             {previewImage && <img src={previewImage} alt="Preview" style={{ width: "100%", borderRadius: "6px" }} />}
+
+              <div>
+                <p><b>Gallery Name:</b> {formData.name}</p>
+                <p><b>Email:</b>{formData.email}</p>
+                <p><b>Website:</b>{formData.website}</p>
+                <p className='left-address'><b>Address:</b>{formData.address}, {formData.suburb}, {formData.area}, {formData.state}, {formData.postcode} | {formData.contact_number}</p>
+                <p>
+                  <b>Opening Hours:</b>
+                  <span>{formData.opening_hours_full}</span>
+                </p>
+                 <p>
+                  <b>Closed days:</b>
+                  <span>{formData.days_closed}</span>
+                </p>
+                <div className={formData.status === 'open' ? 'status-open' : 'status-closed'} style={{display:"inline-block"}}>
+                  {formData.status}
+                </div>
+                <p>{formData.overview}</p>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className='left-fourth-row'>
+                             
+                                <div className='social-icons'>
+                                  <a href={formData.instagram} target='_blank'><TiSocialInstagram /></a>
+                                  <a href={formData.facebook} target='_blank'><FaFacebookSquare /></a>
+                                </div>
+                              </div>
+          </div>
+
+            <div style={{ textAlign: "right", marginTop: "15px" }}>
+              <button onClick={() => setShowPreview(false)} style={{ padding: "6px 15px" }}>
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </form>
+     
   );
 };
 

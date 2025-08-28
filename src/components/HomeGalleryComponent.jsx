@@ -9,7 +9,16 @@ import { FaLessThan } from "react-icons/fa6";
 import { FaGreaterThan } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
-const slugify = (text) => text.toLowerCase().replace(/\s+/g, "-");
+// const slugify = (text) => text.toLowerCase().replace(/\s+/g, "-");
+const slugify = (text) => {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')   // remove anything that's not letters, numbers, space or dash
+    .replace(/\s+/g, '-')           // replace spaces with -
+    .replace(/-+/g, '-');           // collapse multiple - into single -
+};
+
 
 const ImageSlider = ({ images }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -249,22 +258,8 @@ function truncateWithMore(text, maxChars) {
   };
   return (
     <div>
-      <Filter onSearch={handleSearch} resetTrigger={resetCounter}/>
- <div style={{ textAlign: "center", margin: "10px 0" }}>
-        <button 
-          onClick={handleReset} 
-          style={{
-            padding: "8px 16px",
-            background: "#ccc",
-            border: "none",
-            borderRadius: "6px",
-            cursor: "pointer",
-            fontWeight: "600"
-          }}
-        >
-          Reset
-        </button>
-      </div>
+      <Filter onSearch={handleSearch} resetTrigger={resetCounter}  onReset={handleReset}/>
+
       <div ref={galleryTopRef} className='main-gallery-container'>
         {currentItems.map((component) => (
           <div key={component.id} className={`main-comp-wrapper ${!component.exhibitions || component.exhibitions.length === 0 ? 'main-comp-wrapper-no-exhibition' : ''}`}>
@@ -287,7 +282,7 @@ function truncateWithMore(text, maxChars) {
                 /></div> */}
                 <ImageSlider images={component.images} />
                 <div style={{fontSize:"14px",width:"50%"}}>
-                  <p className='left-address'>{component.address} . </p>
+                  <p className='left-address'>{component.address}</p>
                   <p className='left-contact-no'>{component.contact_number}</p>
                   <p className='opening-hours'>
                     Opening Hours <br />
@@ -305,14 +300,31 @@ function truncateWithMore(text, maxChars) {
               </div>
 
               <div className='left-more-btn'>
-                 <Link to={`/${component.slug || slugify(component.name)}`}>+ More</Link>
+                 <Link to={`/${slugify(component.name)}`} state={{ id: component.id }}>+ More</Link>
               </div>
 
               <div className='left-fourth-row'>
-                <div className='social-icons'>
-                  <a href={component.instagram} target='_blank'><TiSocialInstagram /></a>
-                  <a href={component.facebook} target='_blank'><FaFacebookSquare /></a>
-                </div>
+                <div className="social-icons">
+  {component.instagram && (
+    <a 
+      href={component.instagram} 
+      target="_blank" 
+      rel="noopener noreferrer"
+    >
+      <TiSocialInstagram />
+    </a>
+  )}
+  {component.facebook && (
+    <a 
+      href={component.facebook} 
+      target="_blank" 
+      rel="noopener noreferrer"
+    >
+      <FaFacebookSquare />
+    </a>
+  )}
+</div>
+                
                 <div className='planner-icons'>
                   <a href="#" className='add-to-planner-btn'>Add to Personal Planner</a>
                   <a href={`/show-on-map/${component.id}`}>Show on Map</a>
@@ -328,9 +340,14 @@ function truncateWithMore(text, maxChars) {
                   <div key={item.id}>
                     <div className='right-gallery-item'>
                       <div className='left-side-details'>
-                        <p className='artist-name' style={{fontWeight:"700"}}>{item.artists.map((artist, index) => (
-    <span key={index} style={{fontWeight:"700"}}>{artist.first_name} {artist.last_name}</span>
-  ))}</p>
+                        <p className='artist-name' style={{ fontWeight: "700" }}>
+  {item.artists.map((artist, index) => (
+    <span key={index} style={{ fontWeight: "700" }}>
+      {artist.first_name} {artist.last_name}
+      {index < item.artists.length - 1 && ", "}
+    </span>
+  ))}
+</p>
                           <h4 style={{fontWeight:"600",margin: "0.2rem 0"}}>{item.title}</h4>
                         <p className='date-of-exhibition' style={{fontWeight:"500",margin: "0 0 0.5rem 0",fontSize:"14px"}}>
                           <span>{item.start_date} - {item.end_date}</span>

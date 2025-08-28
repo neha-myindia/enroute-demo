@@ -689,7 +689,7 @@ width: 100%;
     justify-content: space-between;
 }
 .filter-right-menu{
-    width: 12%;
+    width: 15%;
     justify-content: space-between;
 }
 .filter-right-menu .icon{
@@ -1179,8 +1179,8 @@ box-sizing: border-box;
     transition: all 0.1s ease;
 }
 .gallery-maps-areas-grid button:hover {
-   background-color: #ffffff;
-   color: #363636;
+   background-color: #ffffff  !important;
+   color: #363636 !important;
 }
 .login-container {
   width: 100%;
@@ -1334,8 +1334,11 @@ box-sizing: border-box;
 
 .exhibition-list {
   list-style: none;
-  padding: 0;
+  padding: 0 20px;
   margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .exhibition-list li {
@@ -1346,6 +1349,7 @@ box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .exhibition-list .actions button {
@@ -1483,4 +1487,34 @@ box-sizing: border-box;
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.selected-date-text {
+  flex: 1;
+  min-width: 0;        
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
+}
+
+.profile-form .preview-btn {
+  padding: 12px;
+  border: none;
+  background: orange;
+  color: white;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.profile-form .show-gallery-listing-btn {
+  padding: 12px;
+  border: none;
+  background: green;
+  color: white;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
 }

@@ -26,20 +26,41 @@ const highlightedIcon = L.icon({
   shadowSize: [41, 41]
 });
 
-const createLabelIcon = (name) => {
+const createLabelIcon = (name, isSameArea = false) => {
   return L.divIcon({
-    className: "custom-marker", 
+    className: "custom-marker",
     html: `
       <div style="display:flex; flex-direction:row; align-items:center;">
         <img src="https://unpkg.com/leaflet/dist/images/marker-icon.png" 
              style="width:25px; height:41px;" />
-        <span style="margin-top:2px; font-size:12px; color:#ffffff; padding:2px 10px; background-color:#363636; font-weight:500; white-space:nowrap;">
+        <span style="margin-top:2px; font-size:12px; color:#fff; 
+                     padding:2px 10px; background-color:${isSameArea ? "#363636" : "#363636"}; 
+                     font-weight:500; white-space:nowrap;">
           ${name}
         </span>
       </div>
     `,
   });
 };
+
+const createHighlightedLabelIcon = (name) => {
+  return L.divIcon({
+    className: "custom-marker",
+    html: `
+      <div style="display:flex; flex-direction:column; align-items:center;">
+        <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png" 
+             style="width:35px; height:55px;" />
+        <span style="margin-top:2px; font-size:12px; color:#fff; 
+                     padding:2px 10px; background-color:#d32f2f; 
+                     font-weight:600; white-space:nowrap;">
+          ${name}
+        </span>
+      </div>
+    `,
+  });
+};
+
+
 
 function ChangeMapView({ coords, zoom }) {
   const map = useMap();
@@ -53,7 +74,7 @@ function ChangeMapView({ coords, zoom }) {
 
 
 
-export const GalleryMapShow=({ selectedArea, highlightedGallery: parentHighlightedGallery })=> {
+export const GalleryNameMapShow=({ selectedArea, highlightedGallery: parentHighlightedGallery })=> {
   const baseUrl = import.meta.env.VITE_API_URL;
   const [galleries, setGalleries] = useState([]);
   const [highlightedGallery, setHighlightedGallery] = useState(null);
@@ -133,22 +154,25 @@ const handleSearch = ({ name, highlightedGallery }) => {
 />
 
 
-        {highlightedGallery && (
-          <ChangeMapView coords={[highlightedGallery.lat, highlightedGallery.lng]} zoom={14} />
-        )}
-
-       {galleries.length > 0 && !selectedGallery && (
-  <ChangeMapView coords={[galleries[0].lat, galleries[0].long]} zoom={15} />
-)}
-
+      {highlightedGallery ? (
+  <ChangeMapView coords={[highlightedGallery.lat, highlightedGallery.lng]} zoom={15} />
+) : selectedGallery ? (
+  <ChangeMapView coords={[selectedGallery.lat, selectedGallery.long]} zoom={15} />
+) : galleries.length > 0 ? (
+  <ChangeMapView coords={[galleries[0].lat, galleries[0].long]} zoom={12} />
+) : null}
         {galleries.map((gallery) => (
     <Marker
       key={gallery.id}
       position={[gallery.lat, gallery.long]}
-      icon={gallery.id === highlightedGallery?.id 
-      ? highlightedIcon : highlightedGallery && gallery.id !== highlightedGallery.id && gallery.area === highlightedGallery.area
-      ? defaultIcon
-      : createLabelIcon(gallery.name)}
+     icon={
+  gallery.id === highlightedGallery?.id
+    ? highlightedIcon
+    : highlightedGallery && gallery.id !== highlightedGallery.id && gallery.area === highlightedGallery.area
+    ? createLabelIcon(gallery.name, true) // same area = blue label
+    : createLabelIcon(gallery.name)       // others = dark label
+}
+
     >
       <Popup>{gallery.name}</Popup>
     </Marker>

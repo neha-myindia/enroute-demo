@@ -106,6 +106,7 @@ const SaleForm = () => {
         value={formData.galleryName}
         onChange={handleChange}
         placeholder="Enter gallery name"
+        disabled
       />
 
       <label>Contact Number</label>

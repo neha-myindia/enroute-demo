@@ -8,7 +8,7 @@ import '../components/ResponsiveLayout.css';
 
 const dates = ["Today", "Specific Date", "Date Range"];
 
-const Filter = ({ onSearch, resetTrigger }) => {
+const Filter = ({ onSearch, resetTrigger, onReset }) => {
   const baseUrl = import.meta.env.VITE_API_URL;
   const [allGalleryNames, setAllGalleryNames] = useState([]);
   const [name, setName] = useState('');
@@ -139,17 +139,35 @@ onSearch(filters);
 
 };
 
+useEffect(() => {
+  if (selectedDates === "Specific Date") {
+    // clear date range if switching to specific date
+    setDateRangeStart("");
+    setDateRangeEnd("");
+  } else if (selectedDates === "Date Range") {
+    // clear specific date if switching to date range
+    setSpecificDate("");
+  }
+}, [selectedDates]);
 
+const formatDate = (dateStr) => {
+  if (!dateStr) return "";
+  const d = new Date(dateStr);
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const year = d.getFullYear();
+  return `${day}-${month}-${year}`;  // DD-MM-YYYY
+};
 
-  const getSelectedDateText = () => {
-    if (selectedDates === "Specific Date" && specificDate) {
-      return `${specificDate}`;
-    }
-    if (selectedDates === "Date Range" && dateRangeStart && dateRangeEnd) {
-      return `${dateRangeStart} to ${dateRangeEnd}`;
-    }
-    return selectedDates;
-  };
+const getSelectedDateText = () => {
+  if (selectedDates === "Specific Date" && specificDate) {
+    return `Specific Date : ${formatDate(specificDate)}`;
+  }
+  if (selectedDates === "Date Range" && dateRangeStart && dateRangeEnd) {
+    return `Date Range : ${formatDate(dateRangeStart)} to ${formatDate(dateRangeEnd)}`;
+  }
+  return selectedDates;
+};
 
  const handleNameChange = (e) => {
   const input = e.target.value;
@@ -183,7 +201,18 @@ onSearch(filters);
           <div className='icon'><HiAdjustments /></div>
         </div>
         <div className='filter-right-menu'>
-          <div className='icon'><MdViewModule /></div>
+           <button 
+          onClick={onReset}
+          style={{
+            padding: "13px 16px",
+            background: "#ccc",
+            border: "none",
+            cursor: "pointer",
+            fontWeight: "600"
+          }}
+        >
+          Reset
+        </button>
           <div className='sort-by-btn' onClick={()=>setSortboxopen(!sortboxopen)}>sort by<IoIosArrowDown /></div>
           {sortboxopen && (<div className='sort-box-filter-page'>
             <ul>
@@ -209,6 +238,7 @@ onSearch(filters);
             }}
             autoComplete="off"
           />
+          
           {showSuggestions && nameSuggestions.length > 0 && (
             <div className="suggestions-list" style={{
               position: 'absolute',
@@ -271,9 +301,13 @@ onSearch(filters);
 
         <div className="suburb-area-filter" ref={dropdownDatesRef}>
           <label>Date</label>
-          <div className="custom-select" onClick={() => setShowDatesOptions(!showDatesOptions)}>
+          {/* <div className="custom-select" onClick={() => setShowDatesOptions(!showDatesOptions)}>
             {getSelectedDateText()} <IoIosArrowDown />
-          </div>
+          </div> */}
+          <div className="custom-select" onClick={() => setShowDatesOptions(!showDatesOptions)}>
+  <span className="selected-date-text">{getSelectedDateText()}</span>
+  <IoIosArrowDown />
+</div>
           {showDatesOptions && (
             <div className="options-list options-list-date">
               {dates.map(option => (
@@ -296,6 +330,7 @@ onSearch(filters);
                         type="date"
                         value={specificDate}
                         onChange={(e) => setSpecificDate(e.target.value)}
+                         onFocus={() => setSelectedDates("Specific Date")} 
                       />
                     </div>
                   )}
@@ -306,11 +341,13 @@ onSearch(filters);
                         type="date"
                         value={dateRangeStart}
                         onChange={(e) => setDateRangeStart(e.target.value)}
+                        onFocus={() => setSelectedDates("Date Range")}
                       /> to{' '}
                       <input
                         type="date"
                         value={dateRangeEnd}
                         onChange={(e) => setDateRangeEnd(e.target.value)}
+                        onFocus={() => setSelectedDates("Date Range")}
                       />
                     </div>
                   )}
