@@ -55,7 +55,7 @@ const [loggedIn, setLoggedIn] = useState(
   e.preventDefault();
 
   try {
-    const response = await fetch(`${baseUrl}/api/login/`, {
+    const response = await fetch(`${baseUrl}/login/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"

@@ -47,7 +47,7 @@ const EditProfileForm = () => {
       const token = localStorage.getItem("authToken");
 console.log("Token in localStorage:", token);
 
-      const res = await fetch(`${baseUrl}/api/my-gallery/`, {
+      const res = await fetch(`${baseUrl}/my-gallery/`, {
         method: "GET",
         headers: {
   "Authorization": `Token ${token}`,
@@ -102,7 +102,7 @@ const handleSubmit = async (e) => {
 
     const token = localStorage.getItem("authToken"); 
 
-    const res = await fetch(`${baseUrl}/api/my-gallery/`, {
+    const res = await fetch(`${baseUrl}/my-gallery/`, {
       method: "PATCH",
      headers: {
   "Authorization": `Token ${token}`,

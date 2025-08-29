@@ -42,7 +42,7 @@ const Filter = ({ onSearch, resetTrigger, onReset }) => {
   useEffect(() => {
   const fetchGalleryNames = async () => {
     try {
-      const response = await fetch(`${baseUrl}/api/galleries/`);
+      const response = await fetch(`${baseUrl}/galleries/`);
       const data = await response.json();
       const names = [...new Set(data.map(item => item.name))]; // unique names
       setAllGalleryNames(names);
@@ -57,7 +57,7 @@ const Filter = ({ onSearch, resetTrigger, onReset }) => {
    useEffect(() => {
       const fetchGalleryItems = async () => {
         try {
-          const response = await fetch(`${baseUrl}/api/galleries/areas/`);
+          const response = await fetch(`${baseUrl}/galleries/areas/`);
           const data = await response.json();
           setAreas(data.areas);
         } catch (error) {

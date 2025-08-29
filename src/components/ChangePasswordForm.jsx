@@ -23,7 +23,7 @@ const ChangePasswordForm = () => {
     // optional GET check
     // if your backend expects a GET request to verify token
     if (savedToken) {
-      fetch(`${baseUrl}/api/change-credentials/`, {
+      fetch(`${baseUrl}/change-credentials/`, {
         method: "GET",
         headers: {
           Authorization: `Token ${savedToken}`,
@@ -59,7 +59,7 @@ const ChangePasswordForm = () => {
     }
 
     try {
-      const response = await fetch(`${baseUrl}/api/change-credentials/`, {
+      const response = await fetch(`${baseUrl}/change-credentials/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -110,7 +110,7 @@ const ChangePasswordForm = () => {
     }
 
     try {
-      const response = await fetch(`${baseUrl}/api/change-credentials/`, {
+      const response = await fetch(`${baseUrl}/change-credentials/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

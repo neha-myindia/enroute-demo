@@ -58,7 +58,7 @@ const ExhibitionForm = () => {
   const fetchExhibitions = async () => {
     try {
       const token = localStorage.getItem("authToken");
-      const res = await fetch(`${baseUrl}/api/my-exhibitions/`, {
+      const res = await fetch(`${baseUrl}/my-exhibitions/`, {
         headers: { Authorization: `Token ${token}` },
       });
       if (!res.ok) throw new Error("Failed to load exhibitions");
@@ -100,11 +100,11 @@ const ExhibitionForm = () => {
         fd.append("images", formData.exhibitionImage);
       }
 
-      let url = `${baseUrl}/api/my-exhibitions/`;
+      let url = `${baseUrl}/my-exhibitions/`;
       let method = "POST";
 
       if (editing && formData.id) {
-        url = `${baseUrl}/api/exhibitions/${formData.id}/`;
+        url = `${baseUrl}/exhibitions/${formData.id}/`;
         method = "PATCH";  
       }
 
@@ -150,7 +150,7 @@ const ExhibitionForm = () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem("authToken");
-      const res = await fetch(`${baseUrl}/api/exhibitions/${id}/`, {
+      const res = await fetch(`${baseUrl}/exhibitions/${id}/`, {
         method: "DELETE",
         headers: { Authorization: `Token ${token}` },
       });
