@@ -82,7 +82,7 @@ export const GalleryNameMapShow=({ selectedArea, highlightedGallery: parentHighl
   
   const baseUrl = import.meta.env.VITE_API_URL;
   const [galleries, setGalleries] = useState([]);
-
+  const [highlightedGallery, setHighlightedGallery] = useState(parentHighlightedGallery || null);
   const [selectedGallery, setSelectedGallery] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 const [selectedFromURL, setSelectedFromURL] = useState(null);
@@ -90,9 +90,9 @@ const [selectedFromURL, setSelectedFromURL] = useState(null);
   const [allGalleries, setAllGalleries] = useState([]);
   
 
-  useEffect(() => {
+   useEffect(() => {
     setHighlightedGallery(parentHighlightedGallery || null);
-    console.log("🔎 Highlighted Gallery from parent:", highlightedGallery);
+    console.log("🔎 Highlighted Gallery from parent:", parentHighlightedGallery);
   }, [parentHighlightedGallery]);
 
 useEffect(() => {
