@@ -12,7 +12,7 @@ import { useParams } from 'react-router-dom';
 const defaultIcon = L.icon({
   iconUrl: "https://unpkg.com/leaflet/dist/images/marker-icon.png",
   iconSize: [25, 41],
-  iconAnchor: [17, 55],      
+  iconAnchor: [12, 41],      
   popupAnchor: [1, -40], 
 });
 
@@ -21,7 +21,7 @@ const highlightedIcon = L.icon({
   iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
    iconSize: [35, 55],       
-  iconAnchor: [17, 55],      
+  iconAnchor: [20, 40],      
   popupAnchor: [1, -40],     
   shadowSize: [41, 41]
 });
@@ -31,23 +31,26 @@ const createLabelIcon = (name, isSameArea = false) => {
     className: "custom-marker",
     html: `
       <div style="display:flex; flex-direction:row; align-items:center;">
-        <img src="https://unpkg.com/leaflet/dist/images/marker-icon.png" 
+        <img src="https://unpkg.com/leaflet/dist/images/marker-icon.png"
              style="width:25px; height:41px;" />
-        <span style="margin-top:2px; font-size:12px; color:#fff; 
-                     padding:2px 10px; background-color:${isSameArea ? "#363636" : "#363636"}; 
-                     font-weight:500; white-space:nowrap;">
+        <span style="margin-left:5px; font-size:12px; color:#fff;
+                     padding:2px 8px; background-color:${isSameArea ? "#2c2c2c" : "#363636"};
+                     border-radius:4px; font-weight:500; white-space:nowrap;">
           ${name}
         </span>
       </div>
     `,
+    iconAnchor: [12, 41],   // ✅ bottom center aligned with default marker
+    popupAnchor: [1, -34],
   });
 };
+
 
 const createHighlightedLabelIcon = (name) => {
   return L.divIcon({
     className: "custom-marker",
     html: `
-      <div style="display:flex; flex-direction:column; align-items:center;">
+      <div style="display:flex; flex-direction:row; align-items:center;">
         <img src="https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png" 
              style="width:35px; height:55px;" />
         <span style="margin-top:2px; font-size:12px; color:#fff; 
@@ -56,7 +59,8 @@ const createHighlightedLabelIcon = (name) => {
           ${name}
         </span>
       </div>
-    `,
+    `, iconAnchor: [17, 55],
+    popupAnchor: [1, -34],
   });
 };
 
@@ -75,17 +79,20 @@ function ChangeMapView({ coords, zoom }) {
 
 
 export const GalleryNameMapShow=({ selectedArea, highlightedGallery: parentHighlightedGallery })=> {
+  
   const baseUrl = import.meta.env.VITE_API_URL;
   const [galleries, setGalleries] = useState([]);
-  const [highlightedGallery, setHighlightedGallery] = useState(null);
+
   const [selectedGallery, setSelectedGallery] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 const [selectedFromURL, setSelectedFromURL] = useState(null);
   const { id } = useParams();
   const [allGalleries, setAllGalleries] = useState([]);
+  
 
   useEffect(() => {
     setHighlightedGallery(parentHighlightedGallery || null);
+    console.log("🔎 Highlighted Gallery from parent:", highlightedGallery);
   }, [parentHighlightedGallery]);
 
 useEffect(() => {
@@ -137,8 +144,14 @@ const handleSearch = ({ name, highlightedGallery }) => {
       });
   }
 }, [id]);
+ if (!highlightedGallery) return null;
 
+  // find the searched one from all
+  const searched = galleries.find(g => g.id === highlightedGallery.id);
 
+  if (!searched) return <p>Gallery not found</p>;
+
+  const position = [searched.lat, searched.long];
 
   return (
     <div className="map-wrapper">
@@ -155,28 +168,35 @@ const handleSearch = ({ name, highlightedGallery }) => {
 
 
       {highlightedGallery ? (
-  <ChangeMapView coords={[highlightedGallery.lat, highlightedGallery.lng]} zoom={15} />
+  <ChangeMapView coords={[searched.lat, searched.long]} zoom={15} />
 ) : selectedGallery ? (
   <ChangeMapView coords={[selectedGallery.lat, selectedGallery.long]} zoom={15} />
 ) : galleries.length > 0 ? (
   <ChangeMapView coords={[galleries[0].lat, galleries[0].long]} zoom={12} />
 ) : null}
-        {galleries.map((gallery) => (
+        {galleries.map((gallery) => {
+  const lat = parseFloat(gallery.lat);
+  const long = parseFloat(gallery.long);
+
+  console.log("Marker coords:", gallery.name, lat, long);
+
+  if (!lat || !long) return null; // skip invalid markers
+
+  return (
     <Marker
       key={gallery.id}
-      position={[gallery.lat, gallery.long]}
-     icon={
-  gallery.id === highlightedGallery?.id
-    ? highlightedIcon
-    : highlightedGallery && gallery.id !== highlightedGallery.id && gallery.area === highlightedGallery.area
-    ? createLabelIcon(gallery.name, true) // same area = blue label
-    : createLabelIcon(gallery.name)       // others = dark label
-}
-
+      position={[lat, long]}
+    icon={
+    gallery.id === highlightedGallery?.id
+      ? createHighlightedLabelIcon(gallery.name)
+      : createLabelIcon(gallery.name, gallery.area === highlightedGallery?.area)
+  }
     >
       <Popup>{gallery.name}</Popup>
     </Marker>
-  ))}
+  );
+})}
+
       </MapContainer>
 
       {/* Sidebar */}

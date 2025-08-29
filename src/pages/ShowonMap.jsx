@@ -21,7 +21,7 @@ const highlightedIcon = L.icon({
   iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
    iconSize: [35, 55],       
-        
+         iconAnchor: [17, 55],
   popupAnchor: [1, -40],     
   shadowSize: [41, 41]
 });
@@ -37,7 +37,8 @@ const createLabelIcon = (name) => {
           ${name}
         </span>
       </div>
-    `,
+    `,iconAnchor: [12, 41],   // ✅ bottom center aligned with default marker
+    popupAnchor: [1, -34],
   });
 };
 

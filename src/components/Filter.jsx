@@ -92,7 +92,13 @@ const Filter = ({ onSearch, resetTrigger, onReset }) => {
     setDateRangeEnd('');
 
     // Update selectedAreas and immediately trigger search
-    setSelectedAreas(["All"]); // ✅ store "all" directly
+    if (selectedAreas.includes("All")) {
+      // uncheck all
+      setSelectedAreas([]);
+    } else {
+      // check all including "All"
+      setSelectedAreas(["All", ...areas]);
+    } // ✅ store "all" directly
 
     onSearch({
       name: '',
@@ -226,7 +232,7 @@ const getSelectedDateText = () => {
       <div className='bottom-menu-wrapper'>
         <div style={{ position: 'relative', zIndex: 10 }}>
           <label>Name</label>
-          <input
+          <div><input
             className="input-select"
             type="text"
             placeholder="All"
@@ -237,10 +243,10 @@ const getSelectedDateText = () => {
               if (nameSuggestions.length > 0) setShowSuggestions(true);
             }}
             autoComplete="off"
-          />
+          /><IoIosArrowDown style={{position:"absolute",right:"5%",top:"65%"}}/></div>
           
           {showSuggestions && nameSuggestions.length > 0 && (
-            <div className="suggestions-list" style={{
+            <div className="suggestions-list"  onMouseDown={(e) => e.stopPropagation()} style={{
               position: 'absolute',
               top: '100%',
               left: 0,
@@ -287,14 +293,11 @@ const getSelectedDateText = () => {
       {['All', ...areas].map(area => (
         <label key={area}>
           <input
-            type="checkbox"
-           checked={
-  selectedAreas.includes("All") && area === "All"
-    ? true
-    : selectedAreas.includes(area)
-}
-            onChange={() => handleCheckboxChange(area)}
-          />
+  type="checkbox"
+  checked={selectedAreas.includes(area)}
+  onChange={() => handleCheckboxChange(area)}
+/>
+
           {area}
         </label>
       ))}

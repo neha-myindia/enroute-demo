@@ -6,7 +6,7 @@ import { ImMenu } from "react-icons/im";
 import { RiCloseLargeFill } from "react-icons/ri";
 import { NavLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 
 const Navbar = () => {
@@ -15,6 +15,7 @@ const Navbar = () => {
   external_user_id: "",
   password: ""
 });
+const [showPassword, setShowPassword] = useState(false);
 
 const handleChange = (e) => {
   setCredentials({
@@ -29,7 +30,7 @@ const [loggedIn, setLoggedIn] = useState(
     const [activeIndex, setActiveIndex] = useState(null);
     const [showLogin, setShowLogin] = useState(false);
     const navigate=useNavigate();
-
+const [showForgotPopup, setShowForgotPopup] = useState(false);
     const[bars, setBars]=useState(false)
     const toggleNavbar = () => {
     setBars(prev => !prev);
@@ -195,20 +196,33 @@ setShowLogin(false);
   onChange={handleChange}
 />
                     </div>
-                    <div className='login-input'>
+                    <div className='login-input' style={{position:"relative"}}>
                         <label htmlFor="password">Password</label>
                     <input 
-  type="password" 
-  name="password"
-  value={credentials.password} 
-  onChange={handleChange}
-/>
+    type={showPassword ? "text" : "password"} 
+    name="password"
+    value={credentials.password} 
+    onChange={handleChange} 
+  />  <span 
+    onClick={() => setShowPassword(!showPassword)} 
+    style={{
+      position: "absolute",
+      right: "10px",
+      bottom: "0%",
+      transform: "translateY(-50%)",
+      cursor: "pointer",
+      color: "#555"
+    }}
+  >
+    {showPassword ? <FaEyeSlash /> : <FaEye />}
+  </span>
                     </div>
                     <div style={{display:"flex",alignItems:"center",margin:"1rem 0 2rem 0",justifyContent:"space-between",color:"#1150a3",fontSize:"14px"}}>
-                        <div style={{display:"flex",alignItems:"center"}}>
+                        {/* <div style={{display:"flex",alignItems:"center"}}>
                             <input type="checkbox" name="" id="" />Remember me
-                        </div>
-                        <div>Forgot Password?</div>
+                        </div> */}
+                        <div
+                        onClick={() => setShowForgotPopup(true)}  className='forgot-password-btn'>Forgot Password?</div>
                     </div>
                     <button onClick={handleSubmit} style={{backgroundColor:"#363636",color:"#ffffff"}}>Sign In</button>
                 </form>
@@ -216,6 +230,34 @@ setShowLogin(false);
           </div>
         </div>
       )}
+      {showForgotPopup && (
+  <div className="modal-overlay">
+    <div className="modal-content" style={{textAlign:"center",width:"100vmin",boxSizing:"border-box",padding:"1rem",display:"flex", flexDirection:"column", alignItems:"flex-start"}}>
+     <div style={{width:"100%", display:"flex",alignItems:"flex-end", justifyContent:"flex-end"
+     }}>
+       <button 
+      style={{width: "10px",
+    height: "10px",
+    padding: "1rem"}}
+        type="button" 
+        onClick={() => setShowForgotPopup(false)} 
+        className='close-btn'
+      >
+        X
+      </button>
+     </div>
+      <h2>Password Reset</h2>
+      <p>An email will be sent to your registered email. Thank you.</p>
+      <button 
+        onClick={() => setShowForgotPopup(false)} 
+        style={{marginTop:"1rem", background:"#363636", color:"#fff", padding:"8px 16px", border:"none", cursor:"pointer"}}
+      >
+        OK
+      </button>
+    </div>
+  </div>
+)}
+
         <div className='bottom-nav'>
             <ul>
                 {NavBottomComps.map((navItem,index) => (

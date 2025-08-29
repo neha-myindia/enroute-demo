@@ -15,6 +15,7 @@ const GalleryMapsFilter = ({ onSearch, onAreaSelect }) => {
   const [allGalleryNames, setAllGalleryNames] = useState([]);
 const[areas,setAreas]=useState([])
 const [selectedArea, setSelectedArea] = useState(null);
+ const [loading, setLoading] = useState(false);
 
 
 
@@ -73,21 +74,26 @@ const [selectedArea, setSelectedArea] = useState(null);
 
 
 const handleSubmit = async () => {
+  setLoading(true);
   try {
     const response = await fetch(
       `${baseUrl}/galleries/search/?name=${encodeURIComponent(name)}`
     );
     const data = await response.json();
 
+    console.log("Gallery search API result:", data);
+
     if (data && data.length > 0) {
       const selectedGallery = data[0]; // pick the first match
+
+      // 🔑 Always pass highlightedGallery properly
       onSearch({
         name,
         highlightedGallery: {
           id: selectedGallery.id,
           name: selectedGallery.name,
-          lat: selectedGallery.lat,   // ✅ correct field
-          lng: selectedGallery.long,  // ✅ API uses "long"
+          lat: selectedGallery.lat || selectedGallery.latitude,
+          lng: selectedGallery.long || selectedGallery.longitude, // use `lng` not `long`
         },
       });
     } else {
@@ -95,8 +101,12 @@ const handleSubmit = async () => {
     }
   } catch (error) {
     console.error("Error fetching gallery by name:", error);
+  } finally {
+    setLoading(false);
   }
 };
+
+
 
 
 
@@ -125,38 +135,8 @@ const handleSubmit = async () => {
 
    // ... your existing imports and code remain unchanged
 
-const handleSearch = async () => {
-  // ✅ NEW/CHANGED: Fetch gallery by name to get full info for highlighting
-  if (name) {
-    try {
-      const response = await fetch(
-        `${baseUrl}/galleries/search/?name=${encodeURIComponent(name)}`
-      );
-      const data = await response.json();
 
-      if (data && data.length > 0) {
-        const selectedGallery = data[0]; // pick the first match
-        onSearch({
-          name,
-          highlightedGallery: {
-            id: selectedGallery.id,
-            name: selectedGallery.name,
-            lat: selectedGallery.lat,
-            lng: selectedGallery.long,
-            area: selectedGallery.area, // ✅ NEW: pass area for blue markers
-          },
-        });
-      } else {
-        onSearch({ name, highlightedGallery: null });
-      }
-    } catch (error) {
-      console.error("Error fetching gallery by name:", error);
-    }
-  } else {
-    // ✅ NEW/CHANGED: If no name, just search by area
-    onSearch({ area: selectedArea, highlightedGallery: null });
-  }
-};
+
 
 
   return (
@@ -190,7 +170,7 @@ const handleSearch = async () => {
             autoComplete="off"
           />
           {showSuggestions && nameSuggestions.length > 0 && (
-            <div className="suggestions-list" style={{
+            <div className="suggestions-list" onMouseDown={(e) => e.stopPropagation()} style={{
               position: 'absolute',
               top: '100%',
               left: 0,
@@ -217,8 +197,14 @@ const handleSearch = async () => {
             </div>
           )}
         </div>
-        <div className='search-btn-wrapper' style={{marginLeft:"8vmin"}}>
-          <button onClick={handleSearch}>Search</button>
+       <div className='search-btn-wrapper' style={{marginLeft:"5vmin"}}>
+           <button onClick={handleSubmit} disabled={loading}>
+    {loading ? (
+      <div className='loader-btn-wrapper'><span className="loader"></span></div>
+    ) : (
+      "Search"
+    )}
+  </button>
         </div>
         </div>
         <div style={{marginTop:"8vmin"}}>

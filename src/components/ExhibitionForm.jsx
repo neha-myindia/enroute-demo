@@ -4,15 +4,14 @@ const ExhibitionForm = () => {
   const baseUrl = import.meta.env.VITE_API_URL;
   const [exhibitions, setExhibitions] = useState([]);
   const [formData, setFormData] = useState({
-    id: null,
-    title: "",
-    start_date: "",
-    end_date: "",
-    artistFirstName: "",
-    artistLastName: "",
-    description: "",
-    exhibitionImage: null,
-  });
+  id: null,
+  title: "",
+  start_date: "",
+  end_date: "",
+  description: "",
+  exhibitionImage: null,
+  artists: [], // Array of { id, first_name, last_name }
+});
   const [previewImage, setPreviewImage] = useState(null);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -74,77 +73,86 @@ const ExhibitionForm = () => {
   }, []);
 
   // ✅ Submit (Create / Update)
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem("authToken");
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem("authToken");
 
-    if (!formData.title || !formData.artistFirstName) {
-      alert("Exhibition title and artist first name are required.");
-      return;
-    }
+  if (!formData.title) {
+    alert("Exhibition title is required.");
+    return;
+  }
 
-    try {
-      const fd = new FormData();
-      fd.append("title", formData.title);
-      fd.append("start_date", toApiDate(formData.start_date));
-      fd.append("end_date", toApiDate(formData.end_date));
-      fd.append("description", formData.description);
+  try {
+    const fd = new FormData();
+    fd.append("title", formData.title);
+    fd.append("start_date", toApiDate(formData.start_date));
+    fd.append("end_date", toApiDate(formData.end_date));
+    fd.append("description", formData.description);
 
-      // 🔹 Send artists
-      const artistPayload = [
-        { first_name: formData.artistFirstName, last_name: formData.artistLastName },
-      ];
+    // 🔹 Send artists (include all artists, existing and new)
+    const artistPayload = formData.artists.map(artist => ({
+      ...(artist.id && { id: artist.id }), // Include id for existing artists
+      first_name: artist.first_name,
+      last_name: artist.last_name,
+    }));
+    if (artistPayload.length > 0) {
+      console.log("Artist Payload:", JSON.stringify(artistPayload)); // Debug
       fd.append("artists", JSON.stringify(artistPayload));
-
-      if (formData.exhibitionImage) {
-        fd.append("images", formData.exhibitionImage);
-      }
-
-      let url = `${baseUrl}/my-exhibitions/`;
-      let method = "POST";
-
-      if (editing && formData.id) {
-        url = `${baseUrl}/exhibitions/${formData.id}/`;
-        method = "PATCH";  
-      }
-
-      const res = await fetch(url, {
-        method,
-        headers: { Authorization: `Token ${token}` },
-        body: fd,
-      });
-
-      if (!res.ok) {
-        const errText = await res.text();
-        throw new Error(errText || "Failed to save exhibition");
-      }
-
-      setSuccess(editing ? "Exhibition updated!" : "Exhibition added!");
-      setError("");
-      fetchExhibitions();
-      resetForm();
-    } catch (err) {
-      setError(err.message);
-      setSuccess("");
+    } else {
+      console.log("No artists provided"); // Debug
     }
-  };
 
+    let url = `${baseUrl}/my-exhibitions/`;
+    let method = "POST";
+
+    if (editing && formData.id) {
+      url = `${baseUrl}/exhibitions/${formData.id}/`;
+      method = "PATCH";
+    }
+
+    console.log("Sending request to:", url, "Method:", method); // Debug
+    const res = await fetch(url, {
+      method,
+      headers: { Authorization: `Token ${token}` },
+      body: fd,
+    });
+
+    if (!res.ok) {
+      const errData = await res.json();
+      console.error("Error response:", errData); // Debug
+      throw new Error(errData.error || JSON.stringify(errData) || "Failed to save exhibition");
+    }
+
+    const responseData = await res.json();
+    console.log("Response data:", responseData); // Debug
+
+    setSuccess(editing ? "Exhibition updated!" : "Exhibition added!");
+    setError("");
+    fetchExhibitions();
+    resetForm();
+  } catch (err) {
+    console.error("Submission error:", err.message); // Debug
+    setError(err.message);
+    setSuccess("");
+  }
+};
   // ✅ Edit
   const handleEdit = (exhibition) => {
-    const firstArtist = exhibition.artists?.[0] || {};
-    setFormData({
-      id: exhibition.id,
-      title: exhibition.title,
-      start_date: toInputDate(exhibition.start_date),
-      end_date: toInputDate(exhibition.end_date),
-      artistFirstName: firstArtist.first_name || "",
-      artistLastName: firstArtist.last_name || "",
-      description: exhibition.description,
-      exhibitionImage: null,
-    });
-    setPreviewImage(exhibition.images?.[0]?.image || null);
-    setEditing(true);
-  };
+setFormData({
+  id: exhibition.id,
+  title: exhibition.title,
+  start_date: toInputDate(exhibition.start_date),
+  end_date: toInputDate(exhibition.end_date),
+  description: exhibition.description,
+  exhibitionImage: null,
+  artists: exhibition.artists || [],
+  artistFirstName: exhibition.artists?.[0]?.first_name || "",
+  artistLastName: exhibition.artists?.[0]?.last_name || "",
+});
+
+  setPreviewImage(exhibition.images?.[0]?.image || null);
+  setEditing(true);
+};
 
   // ✅ Delete
   const handleDelete = async (id) => {
@@ -166,15 +174,17 @@ const ExhibitionForm = () => {
   // ✅ Reset form
   const resetForm = () => {
     setFormData({
-      id: null,
-      title: "",
-      start_date: "",
-      end_date: "",
-      artistFirstName: "",
-      artistLastName: "",
-      description: "",
-      exhibitionImage: null,
-    });
+  id: null,
+  title: "",
+  start_date: "",
+  end_date: "",
+  artistFirstName: "",
+  artistLastName: "",
+  description: "",
+  exhibitionImage: null,
+  artists: [],
+});
+
     setPreviewImage(null);
     setEditing(false);
   };

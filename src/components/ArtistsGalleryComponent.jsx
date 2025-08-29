@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 // import { AllArtists } from '../constants/items'
+import { FaLessThan } from "react-icons/fa6";
+import { FaGreaterThan } from "react-icons/fa6";
 
 const ArtistsGalleryComponent = () => {
   const baseUrl = import.meta.env.VITE_API_URL;
@@ -8,6 +10,9 @@ const ArtistsGalleryComponent = () => {
       const [expandedArtists, setExpandedArtists] = useState({});
         const [allArtistItems, setAllArtistItems] = useState([]);
         const [filteredData, setFilteredData] = useState([]);
+          const [currentPage, setCurrentPage] = useState(1);
+        const itemsPerPage = 10;
+        const galleryTopRef = useRef(null);
 
         useEffect(() => {
           const fetchGalleryItems = async () => {
@@ -15,6 +20,7 @@ const ArtistsGalleryComponent = () => {
               const response = await fetch(`${baseUrl}/exhibiting-artists/`);
               const data = await response.json();
               setAllArtistItems(data);
+              setFilteredData(data);
               
             } catch (error) {
               console.error("Error fetching gallery items:", error);
@@ -37,11 +43,41 @@ function truncateWithMore(text, maxChars) {
     }));
   };
 
+const indexOfLastItem = currentPage * itemsPerPage;
+const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+const currentItems = filteredData.slice(indexOfFirstItem, indexOfLastItem);
 
+const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+
+useEffect(() => {
+  if (galleryTopRef.current) {
+    // Jump instantly — no animation
+    galleryTopRef.current.scrollIntoView({ behavior: 'auto' });
+  }
+}, [currentPage]);
+
+ const getPageNumbers = () => {
+    const pages = [];
+    let start = Math.max(1, currentPage - 1);
+    let end = Math.min(totalPages, currentPage + 1);
+
+    if (currentPage <= 3) {
+      start = 1;
+      end = Math.min(3, totalPages);
+    } else if (currentPage >= totalPages - 2) {
+      start = Math.max(totalPages - 2, 1);
+      end = totalPages;
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  };
   return (
-    <div className='main-gallery-container artist-container'>
+    <div ref={galleryTopRef} className='main-gallery-container artist-container'>
         <div>
-            {allArtistItems.map((item)=>(
+            {currentItems.map((item)=>(
                 <div className='artist-card' key={item.id}>
                     <div className='left'>
                       <div className='top'>
@@ -69,6 +105,47 @@ function truncateWithMore(text, maxChars) {
                 </div>
             ))}
         </div>
+         <div className='pagination'>
+                <button
+                  onClick={() => setCurrentPage(1)}
+                  disabled={currentPage === 1}
+                >
+                   <FaLessThan/> <FaLessThan/>
+                </button>
+        
+                <button
+                  onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                >
+                  <FaLessThan/>
+                </button>
+        
+                {getPageNumbers().map((num) => (
+                  <button
+                    key={num}
+                    onClick={() => setCurrentPage(num)}
+                    className={`page-btn ${currentPage === num ? "active" : ""}`}
+                  >
+                    {num}
+                  </button>
+                ))}
+        
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
+                  disabled={currentPage === totalPages}
+                >
+                  <FaGreaterThan/>
+                </button>
+        
+                <button
+                  onClick={() => setCurrentPage(totalPages)}
+                  disabled={currentPage === totalPages}
+                >
+                  <FaGreaterThan/><FaGreaterThan/>
+                </button>
+              </div>
     </div>
   )
 }
