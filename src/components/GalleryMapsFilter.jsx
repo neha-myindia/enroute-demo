@@ -34,7 +34,7 @@ const [selectedArea, setSelectedArea] = useState(null);
    useEffect(() => {
       const fetchGalleryItems = async () => {
         try {
-          const response = await fetch(`${baseUrl}/galleries/areas/`);
+          const response = await fetch(`${baseUrl}/api/galleries/areas/`);
           const data = await response.json();
            console.log("Areas from API:", data);
          setAreas(data.areas || []);
@@ -49,7 +49,7 @@ const [selectedArea, setSelectedArea] = useState(null);
     useEffect(() => {
     const fetchGalleryNames = async () => {
       try {
-        const response = await fetch(`${baseUrl}/galleries/`);
+        const response = await fetch(`${baseUrl}/api/galleries/`);
         const data = await response.json();
         const names = [...new Set(data.map((item) => item.name))];
         setAllGalleryNames(names);
@@ -75,7 +75,7 @@ const [selectedArea, setSelectedArea] = useState(null);
 const handleSubmit = async () => {
   try {
     const response = await fetch(
-      `${baseUrl}/galleries/search/?name=${encodeURIComponent(name)}`
+      `${baseUrl}/api/galleries/search/?name=${encodeURIComponent(name)}`
     );
     const data = await response.json();
 
@@ -130,7 +130,7 @@ const handleSearch = async () => {
   if (name) {
     try {
       const response = await fetch(
-        `${baseUrl}/galleries/search/?name=${encodeURIComponent(name)}`
+        `${baseUrl}/api/galleries/search/?name=${encodeURIComponent(name)}`
       );
       const data = await response.json();
 

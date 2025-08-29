@@ -22,7 +22,7 @@ const GalleryItemDetails = () => {
 
     const fetchDetails = async () => {
       try {
-        const res = await fetch(`${baseUrl}/galleries/${galleryId}/`);
+        const res = await fetch(`${baseUrl}/api/galleries/${galleryId}/`);
         const data = await res.json();
         setGallery(data);
       } catch (err) {

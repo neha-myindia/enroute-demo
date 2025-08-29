@@ -77,7 +77,7 @@ const ArtForSaleFilter = ({ onSearch }) => {
       return;
     }
     try {
-      const response = await fetch(`${baseUrl}/galleries/?name_startswith=${encodeURIComponent(input)}`);
+      const response = await fetch(`${baseUrl}/api/galleries/?name_startswith=${encodeURIComponent(input)}`);
     const data = await response.json();
     
     // ✅ Only show unique, matching suggestions

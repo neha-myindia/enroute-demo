@@ -6,7 +6,7 @@ import '../components/Navbar/Navbar.css';
 import '../components/ResponsiveLayout.css';
 
 
-const dates = ["Today", "Specific Date", "Date Range"];
+const dates = ["All","Today", "Specific Date", "Date Range"];
 
 const Filter = ({ onSearch, resetTrigger, onReset }) => {
   const baseUrl = import.meta.env.VITE_API_URL;
@@ -42,7 +42,7 @@ const Filter = ({ onSearch, resetTrigger, onReset }) => {
   useEffect(() => {
   const fetchGalleryNames = async () => {
     try {
-      const response = await fetch(`${baseUrl}/galleries/`);
+      const response = await fetch(`${baseUrl}/api/galleries/`);
       const data = await response.json();
       const names = [...new Set(data.map(item => item.name))]; // unique names
       setAllGalleryNames(names);
@@ -57,7 +57,7 @@ const Filter = ({ onSearch, resetTrigger, onReset }) => {
    useEffect(() => {
       const fetchGalleryItems = async () => {
         try {
-          const response = await fetch(`${baseUrl}/galleries/areas/`);
+          const response = await fetch(`${baseUrl}/api/galleries/areas/`);
           const data = await response.json();
           setAreas(data.areas);
         } catch (error) {
@@ -284,11 +284,15 @@ const getSelectedDateText = () => {
 
   {showAreaOptions && (
     <div className="options-list">
-      {areas.map(area => (
+      {['All', ...areas].map(area => (
         <label key={area}>
           <input
             type="checkbox"
-            checked={selectedAreas.includes(area)}
+           checked={
+  selectedAreas.includes("All") && area === "All"
+    ? true
+    : selectedAreas.includes(area)
+}
             onChange={() => handleCheckboxChange(area)}
           />
           {area}

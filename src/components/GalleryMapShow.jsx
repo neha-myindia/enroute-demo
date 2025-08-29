@@ -72,11 +72,11 @@ useEffect(() => {
     let url;
 
     if (selectedArea) {
-      url = `${baseUrl}/galleries/search/?area=${encodeURIComponent(selectedArea)}`;
+      url = `${baseUrl}/api/galleries/search/?area=${encodeURIComponent(selectedArea)}`;
       console.log(url);
       
     } else {
-      url = `${baseUrl}/galleries/map/`; // default all
+      url = `${baseUrl}/api/galleries/map/`; // default all
     }
 
     fetch(url, { signal: controller.signal })
@@ -98,14 +98,14 @@ const handleSearch = ({ name, highlightedGallery }) => {
   setHighlightedGallery(highlightedGallery || null);
 
   // fetch normal galleries with filters (area, name)
-  fetch(`${baseUrl}/galleries/?name_startswith=${name || ""}`)
+  fetch(`${baseUrl}/api/galleries/?name_startswith=${name || ""}`)
     .then(res => res.json())
     .then(data => setGalleries(data));
 };
 
  useEffect(() => {
   if (id) {
-    axios.get(`${baseUrl}/galleries/map/?id=${id}`)
+    axios.get(`${baseUrl}/api/galleries/map/?id=${id}`)
       .then(res => {
         setSelectedGallery(res.data[0]);
         setSelectedFromURL(res.data[0]); 

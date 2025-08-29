@@ -12,13 +12,13 @@ const ArtistsGalleryComponent = () => {
         useEffect(() => {
           const fetchGalleryItems = async () => {
             try {
-              const response = await fetch(`${baseUrl}/exhibiting-artists/`);
+              const response = await fetch(`${baseUrl}/api/exhibiting-artists/`);
               const data = await response.json();
               setAllArtistItems(data);
               
             } catch (error) {
               console.error("Error fetching gallery items:", error);
-              console.log("Fetching from:", `${baseUrl}/exhibiting-artists/`);
+              console.log("Fetching from:", `${baseUrl}/api/exhibiting-artists/`);
             }
           };
       

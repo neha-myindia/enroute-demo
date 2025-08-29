@@ -19,14 +19,26 @@ const Filter = ({ onSearch }) => {
   const [selectedAreas, setSelectedAreas] = useState([]);
   const [showAreaOptions, setShowAreaOptions] = useState(false);
   const dropdownAreaRef = useRef(null);
+  const sortboxRef = useRef(null); 
+  const [sortboxopen,setSortboxopen]=useState(false);
 
-  useEffect(() => {
+  
+
+    useEffect(() => {
     function handleClickOutside(event) {
+      // close area dropdown
       if (dropdownAreaRef.current && !dropdownAreaRef.current.contains(event.target)) {
         setShowAreaOptions(false);
       }
+      // close suggestions
       setShowSuggestions(false);
+
+      // ✅ close sortbox dropdown
+      if (sortboxRef.current && !sortboxRef.current.contains(event.target)) {
+        setSortboxopen(false);
+      }
     }
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -77,7 +89,7 @@ const Filter = ({ onSearch }) => {
       return;
     }
     try {
-      const response = await fetch(`${baseUrl}/galleries/?name_startswith=${encodeURIComponent(input)}`);
+      const response = await fetch(`${baseUrl}/api/galleries/?name_startswith=${encodeURIComponent(input)}`);
     const data = await response.json();
     
     // ✅ Only show unique, matching suggestions
@@ -105,9 +117,14 @@ const Filter = ({ onSearch }) => {
           <div>filter by</div>
           <div className='icon'><HiAdjustments /></div>
         </div>
-        <div className='filter-right-menu'>
-          <div className='icon'></div>
-          <div className='sort-by-btn'>sort by<IoIosArrowDown /></div>
+        <div className='filter-right-menu' style={{justifyContent:"flex-end"}}>
+           <div className='sort-by-btn' onClick={()=>setSortboxopen(!sortboxopen)}>sort by<IoIosArrowDown /></div>
+                   {sortboxopen && (<div className='sort-box-filter-page'>
+                     <ul>
+                       <li>Artist Name (A-Z)</li>
+                       <li>Artist Name (Z-A)</li>
+                     </ul>
+                   </div>)}
         </div>
       </div>
 
